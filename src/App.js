@@ -1,25 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
 
+function Header(){
+    return (
+        <div>
+            <div>헤더 공간!!</div>
+        </div>
+    )
+}
+
+function Footer(){
+    return (
+        <div>
+            <div>여기는 푸터 공간!!</div>
+        </div>
+    )
+}
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Header></Header>
+            <Header></Header>
+            <Header></Header>
+            <div style={{color:"red", fontSize:"50px"}}>Hello world!</div>
+            <Footer></Footer>
+        </div>
+    );
 }
 
 export default App;

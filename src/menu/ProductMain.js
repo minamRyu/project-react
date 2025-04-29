@@ -1,4 +1,4 @@
-import Product from "./component/Product";
+import Product from "../component/Product";
 import { useState } from "react";
 
 function ProductMain(){

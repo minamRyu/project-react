@@ -1,7 +1,7 @@
-import './App.css';
-import Header from './component/Header';
-import Body from './component/Body';
-import Footer from './component/Footer';
+import '../App.css';
+import Header from '../component/Header';
+import Body from '../component/Body';
+import Footer from '../component/Footer';
 
 function App() {
     // db에서 조회한 값이라 예상하고 아래와 같이 작성

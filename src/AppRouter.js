@@ -16,7 +16,7 @@ import Effect from './useEffect1';
 import ProductMain from './menu/ProductMain';
 import Review from './menu/Review';
 import Ref from './menu/Ref';
-import SignIn2 from './menu/SignIn2';
+import Login from './menu/Login';
 import SignInSide from './menu/SignInSide'
 import ContextEx from './menu/ContextEx'
 import Main from './menu/Main';
@@ -29,7 +29,7 @@ import { Feed, FeedOutlined } from '@mui/icons-material';
 const drawerWidth = 240;
 
 const menuItems = [
-    { text: 'SignIn2.js', icon: <AppsIcon />, path: '/signIn2' },
+    { text: 'Login.js', icon: <AppsIcon />, path: '/login' },
     { text: 'FeedList.js', icon: <FeedOutlined />, path: '/feedList' },
     { text: 'FeedAdd.js', icon: <FeedOutlined />, path: '/feedAdd' },
     { text: 'App.js', icon: <AppsIcon />, path: '/app' },
@@ -100,7 +100,7 @@ function AppRouter() {
         <Box component="main" sx={{ flexGrow: 1, bgcolor: '#fafafa', p: 3 }}>
             <Toolbar />
             <Routes>
-            <Route path="/signIn2" element={<SignIn2 />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/feedList" element={<FeedList />} />
             <Route path="/feedAdd" element={<FeedAdd />} />
             <Route path="/app" element={<App />} />

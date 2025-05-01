@@ -4,7 +4,7 @@ import { Stack, Container, Typography, Card, CardContent, Divider, Button } from
 import { jwtDecode } from 'jwt-decode';
 
 
-function App() {
+function FeedList() {
     const [feeds, setFeeds] = useState([]);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -88,4 +88,4 @@ function App() {
     )
 }
 
-export default App
+export default FeedList

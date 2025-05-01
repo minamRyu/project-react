@@ -9,7 +9,6 @@ import SendIcon from '@mui/icons-material/Send';
 import PeopleIcon from '@mui/icons-material/People';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
-import Menu from './Menu';
 import App from './menu/App';
 import State from './menu/State';
 import Effect from './useEffect1';
@@ -24,14 +23,18 @@ import ReducerEx from './menu/ReducerEx';
 import ReducerEx2 from './menu/ReducerEx2';
 import FeedList from './menu/FeedList';
 import FeedAdd from './menu/FeedAdd';
-import { Feed, FeedOutlined } from '@mui/icons-material';
+import Memo from './menu/Memo';
+import { FeaturedVideo, Feed, FeedOutlined, LoginTwoTone, PeopleSharp } from '@mui/icons-material';
+import UseIdEx from './menu/UseIdEx';
 
 const drawerWidth = 240;
 
 const menuItems = [
-    { text: 'Login.js', icon: <AppsIcon />, path: '/login' },
-    { text: 'FeedList.js', icon: <FeedOutlined />, path: '/feedList' },
-    { text: 'FeedAdd.js', icon: <FeedOutlined />, path: '/feedAdd' },
+    { text: 'Login.js', icon: <LoginTwoTone />, path: '/login' },
+    { text: 'Feed.js', icon: <FeedOutlined />, path: '/feedList' },
+    { text: 'FeedAdd.js', icon: <FeaturedVideo />, path: '/feedAdd' },
+    { text: 'Memo.js', icon: <FeedOutlined />, path: '/memo' },
+    { text: 'UseIdEx.js', icon: <PeopleSharp />, path: '/useIdEx' },
     { text: 'App.js', icon: <AppsIcon />, path: '/app' },
     { text: 'State.js', icon: <ArticleIcon />, path: '/state' },
     { text: 'Effect.js', icon: <SendIcon />, path: '/effect' },
@@ -103,6 +106,7 @@ function AppRouter() {
             <Route path="/login" element={<Login />} />
             <Route path="/feedList" element={<FeedList />} />
             <Route path="/feedAdd" element={<FeedAdd />} />
+            <Route path="/memo" element={<Memo />} />
             <Route path="/app" element={<App />} />
             <Route path="/state" element={<State />} />
             <Route path="/effect" element={<Effect />} />
@@ -113,6 +117,7 @@ function AppRouter() {
             <Route path="/main" element={<Main />} />
             <Route path="/reducerEx" element={<ReducerEx />} />
             <Route path="/reducerEx2" element={<ReducerEx2 />} />
+            <Route path="/useIdEx" element={<UseIdEx />} />
             </Routes>
         </Box>
         </Box>

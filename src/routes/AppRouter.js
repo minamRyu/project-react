@@ -1,19 +1,21 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Box } from '@mui/material';
-import { SaveAlt, LoginTwoTone, FeedTwoTone, Pageview, LogoutOutlined } from '@mui/icons-material'
+import { SaveAlt, LoginTwoTone, FeedTwoTone, Pageview, LogoutOutlined, Home } from '@mui/icons-material'
 
 import Login from '../pages/Login';
 import Join from '../pages/Join';
 import FeedAdd from '../pages/FeedAdd';
 import MyPage from '../pages/MyPage';
 import Logout from '../pages/Logout';
+import FeedList from '../pages/FeedList';
 
 const drawerWidth = 240;
 
 const menuItems = [
     { text: 'Login', icon: <LoginTwoTone />, path: '/login' },
     { text: 'Join', icon: <SaveAlt />, path: '/join' },
+    { text: 'FeedList', icon: <FeedTwoTone />, path: '/feedList' },
     { text: 'FeedAdd', icon: <FeedTwoTone />, path: '/feedAdd' },
     { text: 'MyPage', icon: <Pageview />, path: '/myPage' },
     { text: 'Logout', icon: <LogoutOutlined />, path: '/logout' },
@@ -77,6 +79,7 @@ function AppRouter() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/join" element={<Join />} />
+                <Route path="/feedList" element={<FeedList />} />
                 <Route path="/feedAdd" element={<FeedAdd />} />
                 <Route path="/myPage" element={<MyPage />} />
                 <Route path="/logout" element={<Logout />} />

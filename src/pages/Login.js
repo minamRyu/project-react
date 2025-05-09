@@ -52,7 +52,7 @@ function Login() {
                 if(data.success){
                     setDialogMessage(data.message);
                     localStorage.setItem("token", data.token);
-                    navigate("/myPage");
+                    navigate("/feedList");
                 } else {
                     setDialogMessage(data.message);
                 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
     TextField, Button, Box, Typography, Stack
 } from '@mui/material';
@@ -6,6 +7,7 @@ import {
 function FeedAdd() {
     const [content, setContent] = useState('');
     const [images, setImages] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -41,7 +43,8 @@ function FeedAdd() {
             body: formData,
         });
         const data = await res.json();
-            console.log(data);
+            // console.log(data);
+            navigate("/feedList");
         } catch (err) {
             console.error('등록 실패:', err);
         }

@@ -4,6 +4,7 @@ import {
   Typography, Avatar, ImageList, ImageListItem
 } from '@mui/material';
 import FeedDetail from './FeedDetail';
+import { useNavigate } from 'react-router-dom';
 
 function parseJwt(token) {
     try {
@@ -14,17 +15,29 @@ function parseJwt(token) {
 }
 
 function FeedList() {
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
-    const [selectedPostId, setSelectedPostId] = useState(null);
     const [followers, setFollowers] = useState([]);  
     const [page, setPage] = useState(1);  
     const [loading, setLoading] = useState(false); 
     const [hasMorePosts, setHasMorePosts] = useState(true);
     const [followingStatus, setFollowingStatus] = useState({});
+    const [selectedFollowerId, setSelectedFollowerId] = useState(null);
+    const [openFeedDetail, setOpenFeedDetail] = useState(false);
 
     const token = localStorage.getItem('token');
     const userPayload = token ? parseJwt(token) : null;
-    const loginUserId = userPayload?.user_id;
+    const loginUserId = userPayload?.user_id;    
+
+    useEffect(() => {
+        loadRecommendedPosts(page);
+    }, [page]);
+
+    useEffect(() => {
+        posts.forEach(post => {
+            handleFollowCheck(post.user_id);
+        });
+    }, [posts]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -32,7 +45,7 @@ function FeedList() {
             console.error('토큰이 없습니다.');
             return;
         }
-        fetch('http://localhost:3005/follow/followers', {
+        fetch('http://localhost:3005/follow/followings', {
             headers: {
                 'Authorization': `Bearer ${token}`  
             }
@@ -40,7 +53,7 @@ function FeedList() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                setFollowers(data.followers);  
+                setFollowers(data.followings);  
             } else {
                 console.error('팔로워 불러오기 실패:', data.message);
             }
@@ -48,8 +61,8 @@ function FeedList() {
         .catch(err => console.error('팔로워 불러오기 오류:', err));
     }, [loginUserId]);
 
-    // 팔로우 상태 확인
     const handleFollowCheck = (followingId) => {
+        const token = localStorage.getItem('token');
         fetch(`http://localhost:3005/follow/isFollowing?following_id=${followingId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -67,7 +80,6 @@ function FeedList() {
         .catch(err => console.error('팔로우 상태 확인 오류:', err));
     };
 
-    // 팔로우 요청
     const handleFollow = (e, followingId) => {
         e.stopPropagation();
         const token = localStorage.getItem('token');
@@ -83,48 +95,47 @@ function FeedList() {
         })
         .then(res => res.json())
         .then(data => {
-            if (data.success) {
+            if (data.message === '팔로우 성공') {
                 alert('팔로우 성공');
-                // 팔로우 후 상태 업데이트
-                setFollowingStatus(prev => ({
-                    ...prev,
-                    [followingId]: true
-                }));
+                handleFollowCheck(followingId); 
             } else {
                 alert('팔로우 실패: ' + data.message);
             }
         })
-        .catch(err => console.error('팔로우 오류:', err));
+        .catch(err => {
+            console.error('팔로우 오류:', err);
+            alert('팔로우 요청 중 오류 발생');
+        });
     };
 
-    useEffect(() => {
+    const loadRecommendedPosts = (pageToLoad = 1) => {
         setLoading(true);
         const token = localStorage.getItem('token');
         if (!token) {
             console.error('토큰이 없습니다.');
             return;
         }
-        fetch(`http://localhost:3005/feed/recommended-posts?page=${page}`, {
+        fetch(`http://localhost:3005/feed/recommended-posts?page=${pageToLoad}`, {
             headers: {
                 'Authorization': `Bearer ${token}`  
             }
         })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    if (data.data.length > 0) {
-                        setPosts(data.data);  
-                    }
-                    if (data.data.length < 10) {
-                        setHasMorePosts(false); 
-                    }
-                } else {
-                    console.error('추천 피드 불러오기 실패:', data.message);
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                if (data.data.length > 0) {
+                    setPosts(data.data);  
                 }
-            })
-            .catch(err => console.error('추천 피드 에러:', err))
-            .finally(() => setLoading(false));
-    }, [page]);
+                if (data.data.length < 10) {
+                    setHasMorePosts(false); 
+                }
+            } else {
+                console.error('추천 피드 불러오기 실패:', data.message);
+            }
+        })
+        .catch(err => console.error('추천 피드 에러:', err))
+        .finally(() => setLoading(false));
+    };
 
     const handleDelete = (postId) => {
         const token = localStorage.getItem('token');
@@ -140,7 +151,6 @@ function FeedList() {
         .then(data => {
             if (data.success) {
                 alert('삭제 완료');
-                setSelectedPostId(null);
                 setPosts(posts.filter(post => post.post_id !== postId));
             } else {
                 alert(data.message || '삭제 실패');
@@ -155,27 +165,68 @@ function FeedList() {
         } 
     };
 
+    const handleFollowerClick = (userId) => {
+        setSelectedFollowerId(userId);
+        fetch(`http://localhost:3005/feed/user?user_id=${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                setPosts(data.posts);  
+            })
+            .catch(err => console.error('피드 불러오기 실패:', err));
+    };
+
+    const handleShowAllPosts = () => {
+        setSelectedFollowerId(null);  
+        loadRecommendedPosts(1);  
+        setPage(1); 
+    };
+
+    const handlePostClick = (postId) => {
+        navigate(`/feedDetail/${postId}`);  
+        setOpenFeedDetail(true);  
+    };
+
     return (
         <Container maxWidth="sm" sx={{ mt: 4 }}>
-            <div style={{ display: 'flex', marginBottom: 16 }}>
-                {followers.map(follower => (
-                    <Avatar
-                        key={follower.user_id}
-                        src={`http://localhost:3005/${follower.profile_img}`}
-                        alt={follower.nickname}
-                        sx={{ marginRight: 1, cursor: 'pointer' }}
-                        onClick={() => {
-                            // 팔로워 클릭 시 해당 피드만 로딩하는 로직 추가 필요
-                        }}
-                    />
-                ))}
+            <div style={{ marginBottom: 24 }}>
+                <h3>팔로워 목록</h3>
+                <div style={{ 
+                    border: '1px solid #ddd', 
+                    borderRadius: 8, 
+                    padding: 8, 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    overflowX: 'auto'
+                }}>
+                    {followers.map(follower => (
+                        <div key={follower.user_id} style={{ marginRight: 12, textAlign: 'center' }}>
+                            <Avatar
+                                src={`http://localhost:3005/${follower.profile_img}`}
+                                alt={follower.nickname}
+                                sx={{ width: 60, height: 60, cursor: 'pointer' }}
+                                onClick={() => handleFollowerClick(follower.user_id)}
+                            />
+                            <div style={{ fontSize: 12, marginTop: 4 }}>
+                                {follower.nickname}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                {selectedFollowerId && (
+                    <div style={{ marginTop: 12, textAlign: 'center' }}>
+                        <Button variant="outlined" onClick={handleShowAllPosts}>
+                            전체 추천 피드 보기
+                        </Button>
+                    </div>
+                )}
             </div>
 
+            <h3>추천 피드</h3>
             {posts.map((post) => (
                 <Card
                     key={post.post_id}
                     sx={{ mb: 4, cursor: 'pointer' }}
-                    onClick={() => setSelectedPostId(post.post_id)}
+                    onClick={() => handlePostClick(post.post_id)}
                 >
                     <CardHeader
                         avatar={
@@ -244,9 +295,8 @@ function FeedList() {
             )}
 
             <FeedDetail
-                postId={selectedPostId}
-                open={Boolean(selectedPostId)}
-                onClose={() => setSelectedPostId(null)}
+                open={openFeedDetail}  
+                onClose={() => setOpenFeedDetail(false)}
             />
         </Container>        
     );

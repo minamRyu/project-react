@@ -5,6 +5,7 @@ import {
     Divider, IconButton 
 } from '@mui/material';
 import ReplyIcon from '@mui/icons-material/Reply';
+import { useParams } from 'react-router-dom';
 
 function parseJwt(token) {
     try {
@@ -14,13 +15,18 @@ function parseJwt(token) {
     }
 }
 
-function FeedDetail({ postId, open, onClose }) {
+function FeedDetail({ open, onClose }) {
+    const { postId } = useParams(); 
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(false);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [replyTargetId, setReplyTargetId] = useState(null);
     const [replyText, setReplyText] = useState('');
+    const [mentionQuery, setMentionQuery] = useState(''); 
+    const [mentionSuggestions, setMentionSuggestions] = useState([]); 
+    const [showMentionList, setShowMentionList] = useState(false); 
+
     const token = localStorage.getItem('token');
     const userPayload = token ? parseJwt(token) : null;
     const loginUserId = userPayload?.user_id;
@@ -141,10 +147,10 @@ function FeedDetail({ postId, open, onClose }) {
             setReplyTargetId(null);
             // 댓글 재조회
             return fetch(`http://localhost:3005/feed/comments/${postId}`)
-              .then(res => res.json())
-              .then(data => {
-                if (data.success) setComments(data.data);
-              });
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) setComments(data.data);
+                });
           }
         })
         .catch(err => console.error('대댓글 등록 실패:', err));
@@ -172,61 +178,106 @@ function FeedDetail({ postId, open, onClose }) {
         .catch(err => console.error('댓글 삭제 실패:', err));
     };
 
+    // 댓글 입력 변화 처리
+    const handleCommentChange = (e) => {
+        const value = e.target.value;
+        setNewComment(value);
+
+        const mentionMatch = value.match(/@(\w*)$/);
+        if (mentionMatch) {
+            const query = mentionMatch[1];
+
+            if (query === '') {
+                // @만 입력한 경우 - 추천 목록
+                fetch('http://localhost:3005/member/recommendations', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        setMentionSuggestions(data.data);
+                        setShowMentionList(true);
+                    }
+                });
+            } else {
+                // 검색어 입력한 경우 - 검색 목록
+                fetch(`http://localhost:3005/member/search?query=${query}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        setMentionSuggestions(data.data);
+                        setShowMentionList(true);
+                    }
+                });
+            }
+        } else {
+            setShowMentionList(false);
+        }
+    };
+
+    const handleMentionSelect = (userKey) => {
+        const newText = newComment.replace(/@(\w*)$/, `@${userKey} `);
+        setNewComment(newText);
+        setShowMentionList(false);
+    };
+
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-        <DialogTitle>게시글 상세</DialogTitle>
+            <DialogTitle>게시글 상세</DialogTitle>
             <DialogContent dividers>
                 {loading ? (
-                <Box textAlign="center" py={4}>
-                    <CircularProgress />
-                </Box>
-                ) : post ? (
-                <>
-                    <Box display="flex" alignItems="center" mb={2}>
-                        <Avatar
-                            src={`http://localhost:3005/${post.profile_img}`}
-                            alt={post.nickname}
-                            sx={{ mr: 2 }}
-                        />
-                        <Box>
-                            <Typography variant="subtitle1">{post.nickname}</Typography>
-                            <Typography variant="body2" color="text.secondary">
-                            {new Date(post.created_at).toLocaleString()}
-                            </Typography>
-                        </Box>
+                    <Box textAlign="center" py={4}>
+                        <CircularProgress />
                     </Box>
-                    <Typography variant="body1" gutterBottom>
-                        {post.content}
-                    </Typography>
-                    <ImageList cols={3} gap={8}>
-                        {post.images.map((img, index) => (
-                            <ImageListItem key={index}>
-                                <img
-                                    src={`http://localhost:3005${img.image_url}`}
-                                    alt={`img-${index}`}
-                                    loading="lazy"
-                                />
-                            </ImageListItem>
-                        ))}
-                    </ImageList>
-                    {loginUserId !== post.user_id && (
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={handleLikeToggle}
-                            sx={{ mt: 1 }}
-                        >
-                            {isLiked ? '❤️' : '🤍'} {likeCount}
-                        </Button>
-                    )}
-                </>
+                ) : post ? (
+                    <>
+                        <Box display="flex" alignItems="center" mb={2}>
+                            <Avatar
+                                src={`http://localhost:3005/${post.profile_img}`}
+                                alt={post.nickname}
+                                sx={{ mr: 2 }}
+                            />
+                            <Box>
+                                <Typography variant="subtitle1">{post.nickname}</Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {new Date(post.created_at).toLocaleString()}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Typography variant="body1" gutterBottom>
+                            {post.content}
+                        </Typography>
+                        <ImageList cols={3} gap={8}>
+                            {post.images.map((img, index) => (
+                                <ImageListItem key={index}>
+                                    <img
+                                        src={`http://localhost:3005${img.image_url}`}
+                                        alt={`img-${index}`}
+                                        loading="lazy"
+                                    />
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                        {loginUserId !== post.user_id && (
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                onClick={handleLikeToggle}
+                                sx={{ mt: 1 }}
+                            >
+                                {isLiked ? '❤️' : '🤍'} {likeCount}
+                            </Button>
+                        )}
+                    </>
                 ) : (
-                <Typography>게시글을 불러오지 못했습니다.</Typography>
+                    <Typography>게시글을 불러오지 못했습니다.</Typography>
                 )}
 
                 <Divider sx={{ my: 2 }} />
                 <Typography variant="subtitle1" gutterBottom>댓글</Typography>
-                    {comments.map((comment) => (
+                {comments.map((comment) => (
                     <Box key={comment.comment_id} mb={2}>
                         <Box display="flex" alignItems="flex-start">
                             <Avatar
@@ -253,7 +304,7 @@ function FeedDetail({ postId, open, onClose }) {
                                     startIcon={<ReplyIcon />}
                                     onClick={() =>
                                         setReplyTargetId(
-                                        replyTargetId === comment.comment_id ? null : comment.comment_id
+                                            replyTargetId === comment.comment_id ? null : comment.comment_id
                                         )
                                     }
                                 >
@@ -272,7 +323,7 @@ function FeedDetail({ postId, open, onClose }) {
                                             variant="contained"
                                             onClick={() => handleReplySubmit(comment.comment_id)}
                                         >
-                                        등록
+                                            등록
                                         </Button>
                                     </Stack>
                                 )}
@@ -284,7 +335,7 @@ function FeedDetail({ postId, open, onClose }) {
                                 display="flex"
                                 alignItems="flex-start"
                                 mt={1}
-                                ml={6} 
+                                ml={6}
                             >
                                 <Avatar
                                     src={`http://localhost:3005/${reply.profile_img}`}
@@ -302,7 +353,7 @@ function FeedDetail({ postId, open, onClose }) {
                                             color="error"
                                             onClick={() => handleCommentDelete(reply.comment_id)}
                                         >
-                                        삭제
+                                            삭제
                                         </Button>
                                     )}
                                 </Box>
@@ -317,10 +368,28 @@ function FeedDetail({ postId, open, onClose }) {
                         placeholder="댓글을 입력하세요"
                         size="small"
                         value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
+                        onChange={handleCommentChange}
                     />
                     <Button variant="contained" onClick={handleCommentSubmit}>등록</Button>
-                </Stack>    
+                </Stack>
+
+                {showMentionList && (
+                    <Box sx={{ border: '1px solid #ccc', borderRadius: 1, p: 1, mt: 1 }}>
+                        {mentionSuggestions.length > 0 ? (
+                            mentionSuggestions.map((user) => (
+                                <Typography
+                                    key={`${user.user_key}-${user.nickname}`}
+                                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#eee' } }}
+                                    onClick={() => handleMentionSelect(user.user_key)}
+                                >
+                                    {user.nickname} (@{user.user_key})
+                                </Typography>
+                            ))
+                        ) : (
+                            <Typography color="text.secondary">검색 결과 없음</Typography>
+                        )}
+                    </Box>
+                )}
             </DialogContent>
         </Dialog>
     );

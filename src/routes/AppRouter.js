@@ -9,6 +9,7 @@ import FeedAdd from '../pages/FeedAdd';
 import MyPage from '../pages/MyPage';
 import Logout from '../pages/Logout';
 import FeedList from '../pages/FeedList';
+import FeedDetail from '../pages/FeedDetail';
 
 const drawerWidth = 240;
 
@@ -22,7 +23,7 @@ const menuItems = [
 ];
 
 function AppRouter() {
-    const location = useLocation(); // 현재 URL 확인
+    const location = useLocation(); 
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -35,7 +36,7 @@ function AppRouter() {
             [`& .MuiDrawer-paper`]: { 
                 width: drawerWidth, 
                 boxSizing: 'border-box',
-                backgroundColor: '#f5f5f5', // 배경 색
+                backgroundColor: '#f5f5f5', 
                 paddingTop: 2,
             },
             }}
@@ -51,7 +52,7 @@ function AppRouter() {
                 <ListItemButton
                     component={Link}
                     to={item.path}
-                    selected={location.pathname === item.path} // 현재 경로에 하이라이트
+                    selected={location.pathname === item.path} 
                     sx={{
                     '&.Mui-selected': {
                         backgroundColor: '#c5cae9',
@@ -83,6 +84,7 @@ function AppRouter() {
                 <Route path="/feedAdd" element={<FeedAdd />} />
                 <Route path="/myPage" element={<MyPage />} />
                 <Route path="/logout" element={<Logout />} />
+                <Route path="/feedDetail/:postId" element={<FeedDetail open={true} onClose={() => {}} />} />
             </Routes>
         </Box>
         </Box>

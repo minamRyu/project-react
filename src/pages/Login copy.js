@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
-import { Container, Box, Card, CardContent, Typography, TextField, Button, Stack, Dialog, DialogTitle, DialogContent, DialogActions, Link } from '@mui/material';
-import { styled } from '@mui/system';
 import { useNavigate } from "react-router-dom";
-
-const LoginCard = styled(Card)({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: '24px',
-  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-  borderRadius: '10px',
-});
-
-const StyledButton = styled(Button)({
-  backgroundColor: '#0095F6', 
-  '&:hover': {
-    backgroundColor: '#0078D4',
-  },
-  padding: '10px 0',
-  fontWeight: 'bold',
-});
+import {
+    Container,
+    Box,
+    Typography,
+    TextField,
+    Button,
+    Card,
+    CardContent,
+    Stack,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
+} from '@mui/material';
 
 function Login() {
     const [form, setForm] = useState({
@@ -72,17 +66,16 @@ function Login() {
     const handleDialogClose = () => {
         setDialogOpen(false);
     };
-
     return (
-        <Container maxWidth="xs">
+        <Container maxWidth="sm">
             <Box mt={10}>
-                <LoginCard>
+                <Card>
                     <CardContent>
-                        <Typography variant="h5" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
+                        <Typography variant="h5" gutterBottom align="center">
                         로그인
                         </Typography>
 
-                        <Stack spacing={2}>
+                        <Stack spacing={2} mt={2}>
                             <TextField
                                 label="이메일"
                                 variant="outlined"
@@ -90,7 +83,6 @@ function Login() {
                                 value={form.email}
                                 onChange={handleChange}
                                 fullWidth
-                                sx={{ marginBottom: '16px' }}
                             />
                             <TextField
                                 label="비밀번호"
@@ -101,24 +93,17 @@ function Login() {
                                 onChange={handleChange}
                                 fullWidth
                             />
-
-                            <StyledButton variant="contained" onClick={handleLogin} fullWidth>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleLogin}
+                            >
                                 로그인
-                            </StyledButton>
-
-                            <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
-                                <Typography variant="body2">
-                                계정이 없으신가요?{' '}
-                                <Link href="/join" underline="hover" sx={{ color: '#0095F6', fontWeight: 'bold' }}>
-                                    회원가입
-                                </Link>
-                                </Typography>
-                            </Box>
+                            </Button>
                         </Stack>
                     </CardContent>
-                </LoginCard>
+                </Card>
             </Box>
-
             {/* 로그인 결과 다이얼로그 */}
             <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
                 <DialogTitle>알림</DialogTitle>
@@ -131,6 +116,6 @@ function Login() {
             </Dialog>
         </Container>
     );
-};
+}
 
 export default Login;

@@ -19,30 +19,26 @@ const menuItems = [
     { text: 'MyPage', icon: <Pageview />, path: '/myPage' },
     { text: 'Logout', icon: <LogoutOutlined />, path: '/logout' },
 ];
+
 function AppRouter() {
     const location = useLocation(); 
+
+    // 로그인 페이지에서는 사이드바 숨기기
     const isLoginPage = location.pathname === '/login';
 
     return (
-        
-        // <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh", position: "relative" }}>
-        <Box sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', width: '240px', height: '100vh' }}> 
+        <Box sx={{ display: 'flex' }}>
             {/* 사이드바 - 로그인 페이지에서는 숨기기 */}
             {!isLoginPage && (
                 <Drawer
                     variant="permanent"
-                    open={true} // Drawer가 항상 표시되도록 설정
                     sx={{
-                        position: "absolute",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "240px",
-                        height: "100vh",
+                        width: drawerWidth,
                         flexShrink: 0,
-                        [`& .MuiDrawer-paper`]: {
-                            width: "240px",
-                            boxSizing: "border-box",
-                            backgroundColor: "#f5f5f5",
+                        [`& .MuiDrawer-paper`]: { 
+                            width: drawerWidth, 
+                            boxSizing: 'border-box',
+                            backgroundColor: '#f5f5f5', 
                             paddingTop: 2,
                         },
                     }}
@@ -77,7 +73,6 @@ function AppRouter() {
                                 </ListItemButton>
                             </ListItem>
                         ))}
-                        
                     </List>
                 </Drawer>
             )}

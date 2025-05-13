@@ -5,7 +5,7 @@ import {
     Divider, IconButton 
 } from '@mui/material';
 import ReplyIcon from '@mui/icons-material/Reply';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function parseJwt(token) {
     try {
@@ -26,6 +26,7 @@ function FeedDetail({ open, onClose }) {
     const [mentionQuery, setMentionQuery] = useState(''); 
     const [mentionSuggestions, setMentionSuggestions] = useState([]); 
     const [showMentionList, setShowMentionList] = useState(false); 
+    const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
     const userPayload = token ? parseJwt(token) : null;
@@ -223,8 +224,12 @@ function FeedDetail({ open, onClose }) {
         setShowMentionList(false);
     };
 
+    const handleClose = () => {
+        navigate(-1);  
+    };
+
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+        <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
             <DialogTitle>게시글 상세</DialogTitle>
             <DialogContent dividers>
                 {loading ? (
@@ -285,11 +290,15 @@ function FeedDetail({ open, onClose }) {
                                 sx={{ width: 36, height: 36, mr: 2 }}
                             />
                             <Box>
-                                <Typography variant="subtitle2">{comment.nickname}</Typography>
+                                <Typography variant="subtitle2">
+                                    {comment.nickname}
+                                </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     {new Date(comment.created_at).toLocaleString()}
                                 </Typography>
-                                <Typography variant="body1">{comment.content}</Typography>
+                                <Typography variant="body1">
+                                    {comment.content}
+                                </Typography>
                                 {loginUserId === comment.user_id && (
                                     <Button
                                         size="small"

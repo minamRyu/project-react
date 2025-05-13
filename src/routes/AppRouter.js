@@ -12,8 +12,6 @@ import FeedList from '../pages/FeedList';
 import FeedDetail from '../pages/FeedDetail';
 import UserProfile from '../pages/UserProfile';
 
-const drawerWidth = 240;
-
 const menuItems = [
     { text: 'FeedList', icon: <FeedTwoTone />, path: '/feedList' },
     { text: 'MyPage', icon: <Pageview />, path: '/myPage' },
@@ -25,23 +23,17 @@ function AppRouter() {
 
     return (
         
-        // <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh", position: "relative" }}>
-        <Box sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', width: '240px', height: '100vh' }}> 
-            {/* 사이드바 - 로그인 페이지에서는 숨기기 */}
+        <Box sx={{ display: "flex", width: "100%", height: "100vh" }}>
             {!isLoginPage && (
                 <Drawer
                     variant="permanent"
-                    open={true} // Drawer가 항상 표시되도록 설정
                     sx={{
-                        position: "absolute",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "240px",
-                        height: "100vh",
+                        width: "240px",  
+                        height: "100vh",  
                         flexShrink: 0,
                         [`& .MuiDrawer-paper`]: {
                             width: "240px",
-                            boxSizing: "border-box",
+                            boxSizing: 'border-box',
                             backgroundColor: "#f5f5f5",
                             paddingTop: 2,
                         },
@@ -103,7 +95,7 @@ function AppRouter() {
 function RouterWrapper() {
     return (
       <BrowserRouter>
-            <AppRouter />
+            <AppRouter /> 
       </BrowserRouter>
     );
 }

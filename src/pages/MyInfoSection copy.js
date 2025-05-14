@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Container, Typography, Card, CardContent, Avatar, Box,
+  Container, Typography, Card, CardContent, Avatar,
   TextField, Button, CircularProgress, Alert, Stack,
   IconButton, Input 
 } from '@mui/material';
@@ -122,96 +122,55 @@ function MyInfoSection() {
     if (error) return <Alert severity="error">{error}</Alert>;
 
     return (
-        <Box
-  sx={{
-    width: '548px',
-    backgroundColor: 'var(--color-current-line)',
-    color: 'var(--color-foreground)',
-    border: '2px solid var(--color-orange)',
-    borderRadius: '8px',
-    p: 3,
-    textAlign: 'center',
-  }}
->
-  <Avatar
-    key={user.profile_img}
-    src={
-      previewUrl ||
-      (user.profile_img
-        ? `${serverBase}/${user.profile_img}?t=${Date.now()}`
-        : '/default-profile.png')
-    }
-    sx={{ width: 80, height: 80, margin: '0 auto 16px auto' }}
-  />
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+            <Card>
+                <CardContent sx={{ textAlign: 'center' }}>
+                    <Avatar
+                        key={user.profile_img}
+                        src={
+                        previewUrl ||
+                        (user.profile_img
+                            ? `${serverBase}/${user.profile_img}?t=${Date.now()}`
+                            : '/default-profile.png')
+                        }
+                        sx={{ width: 80, height: 80, margin: '0 auto 16px auto' }}
+                    />
+                    <Stack direction="row" justifyContent="center" spacing={1}>
+                        <Input type="file" accept="image/*" onChange={handleImageChange} />
+                        <IconButton onClick={handleImageUpload} color="primary" component="span">
+                        <PhotoCamera />
+                        </IconButton>
+                    </Stack>
+                    <Typography variant="h5" gutterBottom>{user.userName}</Typography>
+                    <Typography variant="body2" gutterBottom>이메일: {user.email}</Typography>
 
-  <Stack direction="row" justifyContent="center" spacing={1} mb={2}>
-    <Input type="file" accept="image/*" onChange={handleImageChange} />
-    <IconButton onClick={handleImageUpload} color="primary" component="span">
-      <PhotoCamera />
-    </IconButton>
-  </Stack>
-
-  <Typography variant="h5" gutterBottom>{user.userName}</Typography>
-  <Typography variant="body2" gutterBottom>이메일: {user.email}</Typography>
-
-  <Stack spacing={2} mt={2}>
-    <TextField
-      label="전화번호"
-      name="phone"
-      value={form.phone || ''}
-      onChange={handleChange}
-      fullWidth
-      InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-      InputProps={{ style: { color: 'var(--color-foreground)' } }}
-    />
-    <TextField
-      label="닉네임"
-      name="nickname"
-      value={form.nickname || ''}
-      onChange={handleChange}
-      fullWidth
-      InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-      InputProps={{ style: { color: 'var(--color-foreground)' } }}
-    />
-    <TextField
-      label="생년월일"
-      name="birth"
-      type="date"
-      value={formatDate(form.birth)}
-      onChange={handleChange}
-      InputLabelProps={{ shrink: true, style: { color: 'var(--color-foreground)' } }}
-      InputProps={{ style: { color: 'var(--color-foreground)' } }}
-      fullWidth
-    />
-    <TextField
-      label="자기소개"
-      name="intro"
-      value={form.intro || ''}
-      onChange={handleChange}
-      multiline
-      minRows={3}
-      fullWidth
-      InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-      InputProps={{ style: { color: 'var(--color-foreground)' } }}
-    />
-    <Button
-      variant="contained"
-      onClick={handleSave}
-      sx={{
-        backgroundColor: 'var(--color-cyan)',
-        color: 'var(--color-background)',
-        '&:hover': {
-          backgroundColor: 'var(--color-yellow)',
-          color: 'var(--color-background)',
-        },
-      }}
-    >
-      수정하기
-    </Button>
-    {message && <Alert severity="success">{message}</Alert>}
-  </Stack>
-</Box>
-
+                    <Stack spacing={2} mt={2}>
+                        <TextField label="전화번호" name="phone" value={form.phone || ''} onChange={handleChange} fullWidth />
+                        <TextField label="닉네임" name="nickname" value={form.nickname || ''} onChange={handleChange} fullWidth />
+                        <TextField
+                            label="생년월일"
+                            name="birth"
+                            type="date"
+                            value={formatDate(form.birth)}
+                            onChange={handleChange}
+                            InputLabelProps={{ shrink: true }}
+                            fullWidth
+                        />
+                        <TextField
+                            label="자기소개"
+                            name="intro"
+                            value={form.intro || ''}
+                            onChange={handleChange}
+                            multiline
+                            minRows={3}
+                            fullWidth
+                        />
+                        <Button variant="contained" onClick={handleSave}>수정하기</Button>
+                        {message && <Alert severity="success">{message}</Alert>}
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Container>
     );
 }
 

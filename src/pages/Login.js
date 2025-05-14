@@ -74,49 +74,78 @@ function Login() {
     };
 
     return (
-        <Container maxWidth="xs">
-            <Box mt={10}>
-                <LoginCard>
-                    <CardContent>
-                        <Typography variant="h5" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
+        <Box sx={{ mt: 35, display: 'flex', justifyContent: 'center' }}>
+            <Box
+                sx={{
+                    backgroundColor: 'var(--color-current-line)',
+                    color: 'var(--color-foreground)',
+                    border: '2px solid var(--color-purple)',
+                    borderRadius: '8px',
+                    width: '500px',
+                    p: 3, // padding 24px
+                }}
+            >
+                <Typography variant="h5" gutterBottom align="center" sx={{ fontWeight: 'bold', color: 'var(--color-green)' }}>
+                로그인
+                </Typography>
+
+                <Stack spacing={2}>
+                    <TextField
+                        label="이메일"
+                        variant="outlined"
+                        name="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        fullWidth
+                        sx={{ marginBottom: '16px' }}
+                        InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
+                        InputProps={{ style: { color: 'var(--color-green)' } }}
+                    />
+                    <TextField
+                        label="비밀번호"
+                        type="password"
+                        variant="outlined"
+                        name="pwd"
+                        value={form.pwd}
+                        onChange={handleChange}
+                        fullWidth
+                        InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
+                        InputProps={{ style: { color: 'var(--color-green)' } }}
+                    />
+
+                    <StyledButton
+                        variant="contained"
+                        onClick={handleLogin}
+                        fullWidth
+                        sx={{
+                            backgroundColor: 'var(--color-cyan)',
+                            color: 'var(--color-background)',
+                                    '&:hover': {
+                                        backgroundColor: 'var(--color-yellow)',
+                                        color: 'var(--color-background)',
+                                    },
+                        }}
+                    >
                         로그인
+                    </StyledButton>
+
+                    <Box sx={{ textAlign: 'center', marginTop: '16px', color: 'var(--color-purple)' }}>
+                        <Typography variant="body2">
+                        계정이 없으신가요?{' '}&nbsp;&nbsp;
+                            <Link
+                                href="/join"
+                                underline="hover"
+                                sx={{
+                                    color: 'var(--color-orange)',
+                                    fontWeight: 'bold',
+                                    '&:hover': { color: 'var(--color-yellow)' },
+                                }}
+                            >
+                                회원가입
+                            </Link>
                         </Typography>
-
-                        <Stack spacing={2}>
-                            <TextField
-                                label="이메일"
-                                variant="outlined"
-                                name="email"
-                                value={form.email}
-                                onChange={handleChange}
-                                fullWidth
-                                sx={{ marginBottom: '16px' }}
-                            />
-                            <TextField
-                                label="비밀번호"
-                                type="password"
-                                variant="outlined"
-                                name="pwd"
-                                value={form.pwd}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-
-                            <StyledButton variant="contained" onClick={handleLogin} fullWidth>
-                                로그인
-                            </StyledButton>
-
-                            <Box sx={{ textAlign: 'center', marginTop: '16px' }}>
-                                <Typography variant="body2">
-                                계정이 없으신가요?{' '}
-                                <Link href="/join" underline="hover" sx={{ color: '#0095F6', fontWeight: 'bold' }}>
-                                    회원가입
-                                </Link>
-                                </Typography>
-                            </Box>
-                        </Stack>
-                    </CardContent>
-                </LoginCard>
+                    </Box>
+                </Stack>
             </Box>
 
             {/* 로그인 결과 다이얼로그 */}
@@ -129,7 +158,7 @@ function Login() {
                     <Button onClick={handleDialogClose}>확인</Button>
                 </DialogActions>
             </Dialog>
-        </Container>
+        </Box>
     );
 };
 

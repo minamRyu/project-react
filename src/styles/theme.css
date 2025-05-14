@@ -1,0 +1,66 @@
+/* 색상 변수 정의 */
+:root {
+  --color-background: rgb(40, 42, 54);
+  --color-current-line: rgb(68, 71, 90);
+  --color-foreground: rgb(248, 248, 242);
+  --color-comment: rgb(98, 114, 164); /* 💡 Comment 색상 추가 */
+  --color-purple: rgb(189, 147, 249);
+  --color-cyan: rgb(139, 233, 253);
+  --color-green: rgb(80, 250, 123);
+  --color-orange: rgb(255, 184, 108);
+  --color-pink: rgb(255, 121, 198);
+  --color-yellow: rgb(241, 250, 140);
+  --color-red: rgb(255, 85, 85);
+}
+
+/* 전체 배경 및 기본 텍스트 */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: 'Arial', sans-serif;
+}
+
+/* 공통 박스/카드 스타일 */
+.box, .card {
+  background-color: var(--color-current-line);
+  color: var(--color-foreground);
+  border: 2px solid var(--color-purple);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* 버튼 스타일 */
+.button-primary {
+  background-color: var(--color-cyan);
+  color: var(--color-background);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-primary:hover {
+  background-color: var(--color-yellow);
+  color: var(--color-background);
+}
+
+/* 강조 텍스트 */
+.text-highlight {
+  color: var(--color-pink);
+  font-weight: bold;
+}
+
+/* 링크 스타일 */
+a {
+  color: var(--color-cyan);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-yellow);
+}

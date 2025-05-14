@@ -1,0 +1,27 @@
+.witch-character {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.speech-bubble {
+  background-color: #f8d4b3;
+  padding: 10px;
+  border-radius: 10px;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff5b5b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

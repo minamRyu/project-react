@@ -57,53 +57,35 @@ const NotificationSection = () => {
 
     return (
         <Box>
-  {notifications.length === 0 ? (
-    <Typography>새로운 멘션 알림이 없습니다.</Typography>
-  ) : (
-    notifications.map((notification) => (
-      <Card
-        key={notification.activity_id}
-        sx={{
-          mb: 2,
-          backgroundColor: 'var(--color-background)',
-          color: 'var(--color-foreground)',
-          border: '1px solid var(--color-orange)',
-          maxWidth: '100%',
-        }}
-      >
-        <CardContent>
-          <Box display="flex" alignItems="center" gap={2}>
-            <Avatar src={`http://localhost:3005/${notification.profile_img}`} />
-            <Box sx={{ maxWidth: '100%', wordBreak: 'break-word' }}>
-              <Typography variant="body1">
-                <strong>{notification.from_user_nickname}</strong>님이 게시글에서 언급하셨습니다.
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'var(--color-comment)' }}>
-                {new Date(notification.created_at).toLocaleString()}
-              </Typography>
-            </Box>
-          </Box>
-          <Button
-            variant="outlined"
-            sx={{
-              mt: 2,
-              borderColor: 'var(--color-cyan)',
-              color: 'var(--color-cyan)',
-              '&:hover': {
-                backgroundColor: 'var(--color-yellow)',
-                color: 'var(--color-background)',
-              },
-            }}
-            onClick={() => handlePostClick(notification.post_id)}
-          >
-            게시글 보기
-          </Button>
-        </CardContent>
-      </Card>
-    ))
-  )}
-</Box>
-
+            {notifications.length === 0 ? (
+                <Typography>새로운 멘션 알림이 없습니다.</Typography>
+            ) : (
+                notifications.map((notification) => (
+                <Card key={notification.activity_id} sx={{ mb: 2, maxWidth: 500, width: '100%' }}>
+                    <CardContent>
+                        <Box display="flex" alignItems="center" gap={2}>
+                            <Avatar src={`http://localhost:3005/${notification.profile_img}`} />
+                            <Box sx={{ maxWidth: '100%', wordBreak: 'break-word' }}>
+                                <Typography variant="body1">
+                                    <strong>{notification.from_user_nickname}</strong>님이 게시글에서 언급하셨습니다.
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {new Date(notification.created_at).toLocaleString()}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Button
+                            variant="outlined"
+                            sx={{ mt: 2 }}
+                            onClick={() => handlePostClick(notification.post_id)}  
+                        >
+                            게시글 보기
+                        </Button>
+                    </CardContent>
+                </Card>
+                ))
+            )}
+        </Box>
     );
 };
 

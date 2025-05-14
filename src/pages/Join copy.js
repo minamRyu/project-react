@@ -96,20 +96,12 @@ function Join() {
     };
         
     return (
-        <Box sx={{ mt: 35, display: 'flex', justifyContent: 'center' }}>
-            <Box
-                sx={{
-                    backgroundColor: 'var(--color-current-line)',
-                    border: '2px solid var(--color-purple)',
-                    borderRadius: '8px',
-                    width: '500px',
-                    p: 3, // padding 24px
-                }}
-            >
-                <Typography variant="h5" textAlign="center" gutterBottom sx={{ fontWeight: 'bold', color: 'var(--color-green)' }}>
-                회원가입
+        <Container maxWidth="sm">
+        <Box mt={10}>
+            <Card sx={{ p: 4 }}>
+                <Typography variant="h5" textAlign="center" gutterBottom>
+                    회원가입
                 </Typography>
-
                 <Stack spacing={2}>
                     <TextField
                         label="이메일"
@@ -121,8 +113,6 @@ function Join() {
                         helperText={emailError}
                         fullWidth
                         required
-                        InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
-                        InputProps={{ style: { color: 'var(--color-purple)' } }}
                     />
                     <TextField
                         label="비밀번호"
@@ -132,8 +122,6 @@ function Join() {
                         onChange={handleChange}
                         fullWidth
                         required
-                        InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
-                        InputProps={{ style: { color: 'var(--color-purple)' } }}
                     />
                     <TextField
                         label="이름"
@@ -142,17 +130,13 @@ function Join() {
                         onChange={handleChange}
                         fullWidth
                         required
-                        InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
-                        InputProps={{ style: { color: 'var(--color-purple)' } }}
                     />
-                    {/* <TextField
+                    <TextField
                         label="전화번호"
                         name="phone"
                         value={form.phone}
                         onChange={handleChange}
                         fullWidth
-                        InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
-                        InputProps={{ style: { color: 'var(--color-green)' } }}
                     />
                     <TextField
                         label="생년월일"
@@ -160,8 +144,6 @@ function Join() {
                         value={form.birth}
                         onChange={handleChange}
                         fullWidth
-                        InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-                        InputProps={{ style: { color: 'var(--color-foreground)' } }}
                     />
                     <TextField
                         label="소개"
@@ -171,41 +153,30 @@ function Join() {
                         multiline
                         rows={3}
                         fullWidth
-                        InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-                        InputProps={{ style: { color: 'var(--color-foreground)' } }}
-                    /> */}
+                    />
                     <Button
                         variant="contained"
                         fullWidth
                         size="large"
                         onClick={handleSubmit}
                         disabled={isDuplicate}
-                        sx={{
-                            backgroundColor: 'var(--color-cyan)',
-                            color: 'var(--color-background)',
-                                    '&:hover': {
-                                        backgroundColor: 'var(--color-yellow)',
-                                        color: 'var(--color-background)',
-                                    },
-                        }}
                     >
-                        가입하기
+                    가입하기
                     </Button>
                 </Stack>
-            </Box>
-
-            {/* 가입 결과 다이얼로그 */}
-            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
-                <DialogTitle>알림</DialogTitle>
-                <DialogContent>
-                    <Typography>{dialogMessage}</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setDialogOpen(false)}>확인</Button>
-                </DialogActions>
-            </Dialog>
+            </Card>
         </Box>
     
+        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
+            <DialogTitle>알림</DialogTitle>
+            <DialogContent>
+                <Typography>{dialogMessage}</Typography>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setDialogOpen(false)}>확인</Button>
+            </DialogActions>
+        </Dialog>
+        </Container>
     );
 }
 

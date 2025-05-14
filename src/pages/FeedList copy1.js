@@ -196,124 +196,117 @@ function FeedList() {
 
     return (
         <Container maxWidth="sm" sx={{ mt: 4 }}>
-    <div style={{ marginBottom: 24 }}>
-        <h3>팔로워 목록</h3>
-        <div style={{
-            border: '1px solid #ddd',
-            borderRadius: 8,
-            padding: 8,
-            display: 'flex',
-            alignItems: 'center',
-            overflowX: 'auto'
-        }}>
-            {followers.map(follower => (
-                <div key={follower.user_id} style={{ marginRight: 12, textAlign: 'center' }}>
-                    <Avatar
-                        src={`http://localhost:3005/${follower.profile_img}`}
-                        alt={follower.nickname}
-                        sx={{ width: 60, height: 60, cursor: 'pointer' }}
-                        onClick={() => handleFollowerClick(follower.user_id)}
-                    />
-                    <div style={{ fontSize: 12, marginTop: 4 }}>
-                        {follower.nickname}
-                    </div>
-                </div>
-            ))}
-        </div>
-        {selectedFollowerId && (
-            <div style={{ marginTop: 12, textAlign: 'center' }}>
-                <Button variant="outlined" onClick={handleShowAllPosts}>
-                    전체 추천 피드 보기
-                </Button>
-            </div>
-        )}
-    </div>
-
-    <h3>추천 피드</h3>
-    {/* FeedAdd 버튼을 추천 피드 바로 위에 배치 */}
-    <div style={{ textAlign: 'right', marginBottom: 16 }}>
-        <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate('/feedAdd')} // FeedAdd 페이지로 이동
-        >
-            글쓰기
-        </Button>
-    </div>
-
-    {posts.map((post) => (
-        <Card
-            key={post.post_id}
-            sx={{ mb: 4, cursor: 'pointer' }}
-            onClick={() => handlePostClick(post.post_id)}
-        >
-            <CardHeader
-                avatar={<Avatar src={`http://localhost:3005/${post.profile_img}`} />}
-                title={post.nickname}
-                subheader={new Date(post.created_at).toLocaleString()}
-            />
-            <CardContent>
-                <Typography variant="body1" gutterBottom>
-                    {post.content}
-                </Typography>
-                <ImageList cols={3} gap={8}>
-                    {post.images.map((img, index) => (
-                        <ImageListItem key={index}>
-                            <img
-                                src={`http://localhost:3005${img.image_url}`}
-                                alt={`img-${index}`}
-                                loading="lazy"
+            <div style={{ marginBottom: 24 }}>
+                <h3>팔로워 목록</h3>
+                <div style={{ 
+                    border: '1px solid #ddd', 
+                    borderRadius: 8, 
+                    padding: 8, 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    overflowX: 'auto'
+                }}>
+                    {followers.map(follower => (
+                        <div key={follower.user_id} style={{ marginRight: 12, textAlign: 'center' }}>
+                            <Avatar
+                                src={`http://localhost:3005/${follower.profile_img}`}
+                                alt={follower.nickname}
+                                sx={{ width: 60, height: 60, cursor: 'pointer' }}
+                                onClick={() => handleFollowerClick(follower.user_id)}
                             />
-                        </ImageListItem>
+                            <div style={{ fontSize: 12, marginTop: 4 }}>
+                                {follower.nickname}
+                            </div>
+                        </div>
                     ))}
-                </ImageList>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                    ❤️ {post.like_count}명이 좋아합니다
-                </Typography>
-                {loginUserId !== post.user_id && (
-                    <Button
-                        variant={followingStatus[post.user_id] ? 'outlined' : 'contained'}
-                        color="primary"
-                        size="small"
-                        onClick={(e) => {
-                            if (followingStatus[post.user_id]) {
-                                alert('이미 팔로우 중입니다.');
-                            } else {
-                                handleFollow(e, post.user_id);
-                            }
-                        }}
-                        sx={{ mt: 2 }}
-                    >
-                        {followingStatus[post.user_id] ? '팔로우 중' : '팔로우'}
-                    </Button>
+                </div>
+                {selectedFollowerId && (
+                    <div style={{ marginTop: 12, textAlign: 'center' }}>
+                        <Button variant="outlined" onClick={handleShowAllPosts}>
+                            전체 추천 피드 보기
+                        </Button>
+                    </div>
                 )}
-                {loginUserId === post.user_id && (
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(post.post_id);
-                        }}
-                        sx={{ mt: 2 }}
-                    >
-                        삭제
-                    </Button>
-                )}
-            </CardContent>
-        </Card>
-    ))}
+            </div>
 
-    {hasMorePosts && (
-        <Button variant="contained" color="primary" onClick={handleLoadMore} sx={{ mt: 2 }}>
-            더보기
-        </Button>
-    )}
+            <h3>추천 피드</h3>
+            {posts.map((post) => (
+                <Card
+                    key={post.post_id}
+                    sx={{ mb: 4, cursor: 'pointer' }}
+                    onClick={() => handlePostClick(post.post_id)}
+                >
+                    <CardHeader
+                        avatar={
+                            <Avatar src={`http://localhost:3005/${post.profile_img}`} />
+                        }
+                        title={post.nickname}
+                        subheader={new Date(post.created_at).toLocaleString()}
+                    />
+                    <CardContent>
+                        <Typography variant="body1" gutterBottom>
+                            {post.content}
+                        </Typography>
+                        <ImageList cols={3} gap={8}>
+                            {post.images.map((img, index) => (
+                                <ImageListItem key={index}>
+                                    <img
+                                        src={`http://localhost:3005${img.image_url}`}
+                                        alt={`img-${index}`}
+                                        loading="lazy"
+                                    />
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                            ❤️ {post.like_count}명이 좋아합니다
+                        </Typography>
+                        {loginUserId !== post.user_id && (
+                            <Button
+                                variant={followingStatus[post.user_id] ? 'outlined' : 'contained'}
+                                color="primary"
+                                size="small"
+                                onClick={(e) => {
+                                    if (followingStatus[post.user_id]) {
+                                        alert('이미 팔로우 중입니다.');
+                                    } else {
+                                        handleFollow(e, post.user_id);
+                                    }
+                                }}
+                                sx={{ mt: 2 }}
+                            >
+                                {followingStatus[post.user_id] ? '팔로우 중' : '팔로우'}
+                            </Button>
+                        )}
+                        {loginUserId === post.user_id && (
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                size="small"
+                                onClick={(e) => {
+                                    e.stopPropagation(); 
+                                    handleDelete(post.post_id);
+                                }}
+                                sx={{ mt: 2 }}
+                            >
+                            삭제
+                            </Button>
+                        )}
+                    </CardContent>
+                </Card>
+            ))}
 
-    <FeedDetail open={openFeedDetail} onClose={() => setOpenFeedDetail(false)} />
-</Container>
-       
+            {hasMorePosts && (
+                <Button variant="contained" color="primary" onClick={handleLoadMore} sx={{ mt: 2 }}>
+                    더보기
+                </Button>
+            )}
+
+            <FeedDetail
+                open={openFeedDetail}  
+                onClose={() => setOpenFeedDetail(false)}
+            />
+        </Container>        
     );
 }
 

@@ -17,7 +17,7 @@ function MyPage() {
     mt: 18,
     backgroundColor: 'var(--color-current-line)',
     color: 'var(--color-foreground)',
-    border: '2px solid var(--color-orange)',
+    border: '2px solid var(--color-purple)',
     borderRadius: '8px',
     width: '600px',
     p: 3,
@@ -33,7 +33,7 @@ function MyPage() {
         sx={{
           backgroundColor: activeTab === tab ? 'var(--color-cyan)' : 'var(--color-current-line)',
           color: activeTab === tab ? 'var(--color-background)' : 'var(--color-foreground)',
-          border: '1px solid var(--color-orange)',
+          border: '1px solid var(--color-purple)',
           '&:hover': {
             backgroundColor: 'var(--color-yellow)',
             color: 'var(--color-background)',

@@ -2,12 +2,12 @@
 import { useEffect } from 'react';
 
 function Logout() {
-  useEffect(() => {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
-  }, []);
+    useEffect(() => {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+    }, []);
 
-  return <p>로그아웃 중입니다...</p>; 
+    return <p>로그아웃 중입니다...</p>; 
 }
 
 export default Logout;

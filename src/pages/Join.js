@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Box,
-  Card,
-  Typography,
-  TextField,
-  Button,
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+import { Box, Typography, TextField, Button, Stack
 } from '@mui/material';
+import { useNavigate } from "react-router-dom";
+import CharacterAlert from './CharacterAlert';
+import '../styles/character.css';
 
 function Join() {
     const [form, setForm] = useState({
@@ -24,8 +16,8 @@ function Join() {
     });
     const [emailError, setEmailError] = useState('');
     const [isDuplicate, setIsDuplicate] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [dialogMessage, setDialogMessage] = useState('');
+    const navigate = useNavigate();
+    const [showCharacter, setShowCharacter] = useState(false);
     
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -86,17 +78,20 @@ function Join() {
         })
         .then((res) => res.json())
         .then((data) => {
-            setDialogMessage('회원가입이 완료되었습니다.');
-            setDialogOpen(true);
+            setShowCharacter(true);       
         })
         .catch((err) => {
-            setDialogMessage('회원가입 중 오류가 발생했습니다.');
-            setDialogOpen(true);
+            alert('회원가입 중 오류가 발생했습니다.');
         });
+    };
+
+    const handleClose = () => {
+        setShowCharacter(false); 
+        navigate("/login");
     };
         
     return (
-        <Box sx={{ mt: 35, display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ mt: 50, display: 'flex', justifyContent: 'center' }}>
             <Box
                 sx={{
                     backgroundColor: 'var(--color-current-line)',
@@ -145,35 +140,6 @@ function Join() {
                         InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
                         InputProps={{ style: { color: 'var(--color-purple)' } }}
                     />
-                    {/* <TextField
-                        label="전화번호"
-                        name="phone"
-                        value={form.phone}
-                        onChange={handleChange}
-                        fullWidth
-                        InputLabelProps={{ style: { color: 'var(--color-yellow)' } }}
-                        InputProps={{ style: { color: 'var(--color-green)' } }}
-                    />
-                    <TextField
-                        label="생년월일"
-                        name="birth"
-                        value={form.birth}
-                        onChange={handleChange}
-                        fullWidth
-                        InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-                        InputProps={{ style: { color: 'var(--color-foreground)' } }}
-                    />
-                    <TextField
-                        label="소개"
-                        name="intro"
-                        value={form.intro}
-                        onChange={handleChange}
-                        multiline
-                        rows={3}
-                        fullWidth
-                        InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-                        InputProps={{ style: { color: 'var(--color-foreground)' } }}
-                    /> */}
                     <Button
                         variant="contained"
                         fullWidth
@@ -191,21 +157,16 @@ function Join() {
                     >
                         가입하기
                     </Button>
+                    {showCharacter && (
+                        <CharacterAlert 
+                            imageSrc="/assets/joinImg.png"  
+                            onClose={handleClose}
+                            imageStyle={{ maxWidth: '500px', marginTop: '20px' }} 
+                        />
+                    )}
                 </Stack>
             </Box>
-
-            {/* 가입 결과 다이얼로그 */}
-            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
-                <DialogTitle>알림</DialogTitle>
-                <DialogContent>
-                    <Typography>{dialogMessage}</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setDialogOpen(false)}>확인</Button>
-                </DialogActions>
-            </Dialog>
         </Box>
-    
     );
 }
 

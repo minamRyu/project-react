@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import WitchCharacter from './WitchCharacter';
+import CharacterAlert from './CharacterAlert';
 import '../styles/character.css';
 import {
     TextField, Button, Box, Typography, Stack
@@ -10,7 +10,6 @@ function FeedAdd() {
     const [content, setContent] = useState('');
     const [images, setImages] = useState([]);
     const [showCharacter, setShowCharacter] = useState(false);
-    const [message, setMessage] = useState('');
 
     const navigate = useNavigate();
 
@@ -48,8 +47,6 @@ function FeedAdd() {
             body: formData,
         });
         const data = await res.json();
-            // console.log(data);
-            setMessage('등록되었습니다.');
             setShowCharacter(true);
         } catch (err) {
             console.error('등록 실패:', err);
@@ -62,55 +59,77 @@ function FeedAdd() {
     };
     return (
         <Box
-  sx={{
-    mt: 18,
-    width: '600px',
-    backgroundColor: 'var(--color-current-line)',
-    color: 'var(--color-foreground)',
-    border: '2px solid var(--color-purple)',
-    borderRadius: '8px',
-    p: 3,
-  }}
->
-  <Typography variant="h6" gutterBottom>
-    새 게시물 등록
-  </Typography>
+            sx={{
+                mt: 18,
+                width: '600px',
+                backgroundColor: 'var(--color-current-line)',
+                color: 'var(--color-foreground)',
+                border: '2px solid var(--color-purple)',
+                borderRadius: '8px',
+                p: 3,
+            }}
+        >
+            <Typography variant="h6" gutterBottom sx={{ color: 'orange' }}>
+                새 게시물 등록
+            </Typography>
 
-  <TextField
-    fullWidth
-    multiline
-    rows={4}
-    label="내용"
-    value={content}
-    onChange={(e) => setContent(e.target.value)}
-    margin="normal"
-    InputLabelProps={{ style: { color: 'var(--color-foreground)' } }}
-    InputProps={{ style: { color: 'var(--color-foreground)' } }}
-  />
+            <TextField
+                fullWidth
+                multiline
+                rows={4}
+                label="내용"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                margin="normal"
+                InputLabelProps={{ style: { color: 'var(--color-green)' } }}
+                InputProps={{ style: { color: 'var(--color-purple)' } }}
+            />
 
-  <input type="file" multiple onChange={handleImageChange} style={{ marginTop: '16px' }} />
+            <input
+                id="file-upload"
+                type="file"
+                multiple
+                onChange={handleImageChange}
+                style={{ display: 'none' }}  
+            />
+            <label
+                htmlFor="file-upload"
+                style={{
+                    display: 'inline-block',
+                    padding: '8px 16px',
+                    backgroundColor: 'var(--color-purple)',      
+                    color: 'var(--color-comment)',                 
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    marginTop: '16px'
+                }}
+            >
+                이미지 선택
+            </label>
 
-  <Stack direction="row" spacing={2} mt={2}>
-    <Button
-      variant="contained"
-      sx={{
-        backgroundColor: 'var(--color-cyan)',
-        color: 'var(--color-background)',
-        '&:hover': {
-          backgroundColor: 'var(--color-yellow)',
-          color: 'var(--color-background)',
-        },
-      }}
-      onClick={handleSubmit}
-    >
-      등록
-    </Button>
-    {showCharacter && (
-        <WitchCharacter message={message} onClose={handleClose} />
-      )}
-  </Stack>
-</Box>
-
+            <Stack direction="row" spacing={2} mt={2}>
+                <Button
+                    variant="contained"
+                    sx={{
+                        backgroundColor: 'var(--color-green)',
+                        color: 'var(--color-background)',
+                        '&:hover': {
+                        backgroundColor: 'var(--color-purple)',
+                        color: 'var(--color-background)',
+                        },
+                    }}
+                    onClick={handleSubmit}
+                >
+                등록
+                </Button>
+                {showCharacter && (
+                    <CharacterAlert 
+                        imageSrc="/assets/addImg.png"  
+                        onClose={handleClose}
+                    />
+                )}
+            </Stack>
+        </Box>
     );
 }
 

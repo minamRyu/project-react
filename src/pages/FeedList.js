@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Container, Card, CardHeader, CardContent, Button, Box,
+import { Card, CardHeader, CardContent, Button, Box,
   Typography, Avatar, ImageList, ImageListItem
 } from '@mui/material';
 import FeedDetail from './FeedDetail';
 import { useParams , useNavigate } from 'react-router-dom';
+import CharacterAlert from './CharacterAlert';
+import '../styles/character.css';
 
 function parseJwt(token) {
     try {
@@ -25,6 +26,8 @@ function FeedList() {
     const [openFeedDetail, setOpenFeedDetail] = useState(false);
     const { postId } = useParams();
     const navigate = useNavigate();
+    const [activeFollowCharacterUserId, setActiveFollowCharacterUserId] = useState(null);
+    const [pendingDeletePostId, setPendingDeletePostId] = useState(null);
 
     const token = localStorage.getItem('token');
     const userPayload = token ? parseJwt(token) : null;
@@ -97,7 +100,7 @@ function FeedList() {
         .then(res => res.json())
         .then(data => {
             if (data.message === '팔로우 성공') {
-                alert('팔로우 성공');
+                setActiveFollowCharacterUserId(followingId);
                 handleFollowCheck(followingId); 
             } else {
                 alert('팔로우 실패: ' + data.message);
@@ -151,8 +154,7 @@ function FeedList() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert('삭제 완료');
-                setPosts(posts.filter(post => post.post_id !== postId));
+                setPendingDeletePostId(postId); 
             } else {
                 alert(data.message || '삭제 실패');
             }
@@ -191,32 +193,37 @@ function FeedList() {
     }, [postId]);
 
     const handlePostClick = (postId) => {
-        navigate(`/feedDetail/${postId}`); 
+        if (pendingDeletePostId === postId) return;
+            navigate(`/feedDetail/${postId}`);
     };
 
     return (
         <Box sx={{ mt: 18, display: 'flex', justifyContent: 'center' }}>
             <Box
                 sx={{
-                width: '1000px',
-                backgroundColor: 'var(--color-current-line)',
-                color: 'var(--color-foreground)',
-                border: '2px solid var(--color-orange)',
-                borderRadius: '8px',
-                p: 3,
+                    width: '1000px',
+                    backgroundColor: 'var(--color-current-line)',
+                    color: 'var(--color-foreground)',
+                    border: '2px solid var(--color-purple)',
+                    borderRadius: '8px',
+                    p: 3,
                 }}
             >
-                {/* 팔로워 목록 */}
                 <Box sx={{ mb: 4 }}>
-                    <Typography variant="h6">팔로워 목록</Typography>
+                    <Typography 
+                        variant="h6"
+                        sx={{color: 'var(--color-yellow)', fontWeight: 'bold'}}
+                    >팔로워 목록</Typography>
                     <Box
                         sx={{
-                        border: '1px solid var(--color-orange)',
-                        borderRadius: '8px',
-                        p: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        overflowX: 'auto',
+                            border: '1px solid var(--color-purple)',
+                            borderRadius: '8px',
+                            p: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            overflowX: 'auto',
+                            color: 'var(--color-orange)', 
+                            fontWeight: 'bold'
                         }}
                     >
                         {followers.map(follower => (
@@ -242,26 +249,30 @@ function FeedList() {
                         </Box>
                     )}
                 </Box>
-
-                {/* 추천 피드 */}
-                <Typography variant="h6">추천 피드</Typography>
-                <Box sx={{ textAlign: 'right', mb: 2 }}>
-                    <Button
-                        variant="contained"
-                        sx={{
-                            backgroundColor: 'var(--color-cyan)',
-                            color: 'var(--color-background)',
-                            '&:hover': {
-                                backgroundColor: 'var(--color-yellow)',
+                
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, mt: 10 }}>
+                    <Typography 
+                        variant="h6"
+                        sx={{color: 'var(--color-red)', fontWeight: 'bold'}}
+                    >추천 피드</Typography>
+                    <Box sx={{ textAlign: 'right' }}>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: 'var(--color-cyan)',
                                 color: 'var(--color-background)',
-                            },
-                        }}
-                        onClick={() => navigate('/feedAdd')}
-                    >
-                        글쓰기
-                    </Button>
+                                '&:hover': {
+                                    backgroundColor: 'var(--color-yellow)',
+                                    color: 'var(--color-background)',
+                                },
+                            }}
+                            onClick={() => navigate('/feedAdd')}
+                        >
+                            글쓰기
+                        </Button>
+                    </Box>
                 </Box>
-
+                
                 {posts.map(post => (
                     <Card
                         key={post.post_id}
@@ -269,8 +280,8 @@ function FeedList() {
                             mb: 4,
                             cursor: 'pointer',
                             backgroundColor: 'var(--color-background)',
-                            color: 'var(--color-foreground)',
-                            border: '1px solid var(--color-orange)',
+                            color: 'var(--color-orange)',
+                            border: '1px solid var(--color-purple)',
                         }}
                         onClick={() => handlePostClick(post.post_id)}
                     >
@@ -278,6 +289,7 @@ function FeedList() {
                             avatar={<Avatar src={`http://localhost:3005/${post.profile_img}`} />}
                             title={post.nickname}
                             subheader={new Date(post.created_at).toLocaleString()}
+                            subheaderTypographyProps={{ style: { color: 'var(--color-comment)' } }}
                         />
                         <CardContent>
                             <Typography variant="body1" gutterBottom>
@@ -305,7 +317,15 @@ function FeedList() {
                             {loginUserId !== post.user_id && (
                                 <Button
                                     variant={followingStatus[post.user_id] ? 'outlined' : 'contained'}
-                                    sx={{ mt: 2 }}
+                                    sx={{
+                                        mt: 4,
+                                        backgroundColor: 'var(--color-cyan)',
+                                        color: 'var(--color-background)',
+                                        '&:hover': {
+                                            backgroundColor: 'var(--color-yellow)',
+                                            color: 'var(--color-background)',
+                                        },
+                                    }}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         if (followingStatus[post.user_id]) {
@@ -322,7 +342,15 @@ function FeedList() {
                                 <Button
                                     variant="outlined"
                                     color="error"
-                                    sx={{ mt: 2 }}
+                                    sx={{
+                                        mt: 2,
+                                        backgroundColor: 'var(--color-cyan)',
+                                        color: 'var(--color-background)',
+                                        '&:hover': {
+                                            backgroundColor: 'var(--color-yellow)',
+                                            color: 'var(--color-background)',
+                                        },
+                                    }}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleDelete(post.post_id);
@@ -331,26 +359,42 @@ function FeedList() {
                                 삭제
                                 </Button>
                             )}
+                            {activeFollowCharacterUserId === post.user_id && (
+                                <CharacterAlert
+                                    imageSrc="/assets/followImg.png"
+                                    onClose={() => setActiveFollowCharacterUserId(null)}
+                                />
+                            )}
+                            {pendingDeletePostId === post.post_id && (
+                                <CharacterAlert
+                                    imageSrc="/assets/delImg.png"
+                                    imageStyle={{ maxWidth: '800px', marginTop: '20px' }} 
+                                    onClose={() => {
+                                        setPosts(posts.filter(p => p.post_id !== pendingDeletePostId));
+                                        setPendingDeletePostId(null);
+                                    }}
+                                />
+                            )}
                         </CardContent>
                     </Card>
                 ))}
 
                 {hasMorePosts && (
-                <Button
-                    variant="contained"
-                    sx={{
-                        mt: 2,
-                        backgroundColor: 'var(--color-cyan)',
-                        color: 'var(--color-background)',
-                        '&:hover': {
-                            backgroundColor: 'var(--color-yellow)',
-                            color: 'var(--color-background)',
-                        },
-                    }}
-                    onClick={handleLoadMore}
-                >
-                    더보기
-                </Button>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            mt: 2,
+                            backgroundColor: 'var(--color-green)',
+                            color: 'var(--color-yellow)',
+                            '&:hover': {
+                                backgroundColor: 'var(--color-yellow)',
+                                color: 'var(--color-background)',
+                            },
+                        }}
+                        onClick={handleLoadMore}
+                    >
+                        더보기
+                    </Button>
                 )}
                 <FeedDetail open={openFeedDetail} onClose={() => setOpenFeedDetail(false)} />
             </Box>

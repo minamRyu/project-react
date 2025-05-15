@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Box } from '@mui/material';
-import { SaveAlt, LoginTwoTone, FeedTwoTone, Pageview, LogoutOutlined, Home } from '@mui/icons-material'
+import { FeedTwoTone, Pageview, LogoutOutlined } from '@mui/icons-material'
 
 import '../styles/theme.css';
 
@@ -12,7 +12,6 @@ import MyPage from '../pages/MyPage';
 import Logout from '../pages/Logout';
 import FeedList from '../pages/FeedList';
 import FeedDetail from '../pages/FeedDetail';
-import UserProfile from '../pages/UserProfile';
 
 const menuItems = [
     { text: 'FeedList', icon: <FeedTwoTone />, path: '/feedList' },
@@ -25,7 +24,6 @@ function AppRouter() {
     const isLoginPage = location.pathname === '/login' || location.pathname === '/join' || location.pathname === '/';
 
     return (
-        
         <Box
             sx={{
                 width: '100vw',
@@ -43,10 +41,10 @@ function AppRouter() {
                     mt: 8,
                     display: 'flex',
                     flexDirection: isLoginPage ? 'column' : 'row',
-                    justifyContent: 'center',  // ✅ 가로 중앙 정렬 유지
+                    justifyContent: 'center',  
                     alignItems: 'flex-start',
-                    width: 'auto',             // ✅ 필요 없는 100% 제거
-                    maxWidth: isLoginPage ? '500px' : '600px',  // ✅ 고정폭 적용
+                    width: 'auto',             
+                    maxWidth: isLoginPage ? '500px' : '600px',  
                 }}
             >
                 {isLoginPage ? (
@@ -57,31 +55,32 @@ function AppRouter() {
                 </Routes>
                 ) : (
                 <>
-                    {/* 사이드 메뉴 */}
                     <Drawer
                         variant="permanent"
                         sx={{
                             mt: 21,
-                            border: '2px solid var(--color-orange)',
+                            border: '2px solid var(--color-purple)',
                             borderRadius: '6px',
-                            position: 'static',
+                            position: 'fixed',
+                            top: 65,
+                            left: 400,
                             width: '240px',
                             flexShrink: 0,
                             [`& .MuiDrawer-paper`]: {
                                 position: 'relative',
                                 width: '240px',
                                 boxSizing: 'border-box',
-                                backgroundColor: 'var(--color-current-line)',  // ✅ 배경색
-                                color: 'var(--color-foreground)',              // ✅ 기본 글씨색
+                                backgroundColor: 'var(--color-current-line)',  
+                                color: 'var(--color-foreground)',              
                             },
                         }}
-                        >
+                    >
                         <Toolbar>
                             <Typography
                                 variant="h6"
                                 noWrap
                                 component="div"
-                                sx={{ textAlign: 'center', width: '100%', color: 'var(--color-foreground)' }} // ✅ 타이틀 색
+                                sx={{ textAlign: 'center', width: '100%', color: 'var(--color-green)', fontWeight: 'bold', fontSize: '30px' }}
                             >
                             메뉴 목록
                             </Typography>
@@ -94,39 +93,41 @@ function AppRouter() {
                                         to={item.path}
                                         selected={location.pathname === item.path}
                                         sx={{
-                                            color: 'var(--color-foreground)',  // ✅ 텍스트 색상
+                                            color: 'var(--color-foreground)',  
                                             '&.Mui-selected': {
-                                                backgroundColor: 'var(--color-yellow)',  // ✅ 선택된 항목 배경
+                                                backgroundColor: 'var(--color-yellow)',  
                                                 color: 'var(--color-background)',
                                                 fontWeight: 'bold',
                                             },
                                             '&:hover': {
-                                                backgroundColor: 'var(--color-cyan)',    // ✅ 호버 배경
+                                                backgroundColor: 'var(--color-cyan)',   
                                                 color: 'var(--color-background)',
                                             },
                                         }}
                                     >
-                                        <ListItemIcon sx={{ color: 'inherit' }}>
+                                        <ListItemIcon sx={{ color: 'var(--color-red)', fontSize: 32 }}>
                                             {item.icon}
                                         </ListItemIcon>
-                                        <ListItemText primary={item.text} sx={{ fontSize: '18px' }} />
+                                        <ListItemText
+                                            primary={item.text}
+                                            primaryTypographyProps={{
+                                                sx: { color: 'var(--color-orange)', fontSize: '20px', fontWeight: 'bold' }  
+                                            }}
+                                        />
                                     </ListItemButton>
                                 </ListItem>
                             ))}
                         </List>
                     </Drawer>
 
-
-                    {/* 메인 콘텐츠 */}
                     <Box sx={{ p: 3, width: '100%' }}>
-                    <Routes>
-                        <Route path="/feedList" element={<FeedList />} />
-                        <Route path="/feedAdd" element={<FeedAdd />} />
-                        <Route path="/myPage" element={<MyPage />} />
-                        <Route path="/logout" element={<Logout />} />
-                        <Route path="/feedDetail/:postId" element={<FeedDetail open={true} onClose={() => {}} />} />
-                        <Route path="/profile/:userId" element={<UserProfile />} />
-                    </Routes>
+                        <Routes>
+                            <Route path="/feedList" element={<FeedList />} />
+                            <Route path="/feedAdd" element={<FeedAdd />} />
+                            <Route path="/myPage" element={<MyPage />} />
+                            <Route path="/logout" element={<Logout />} />
+                            <Route path="/feedDetail/:postId" element={<FeedDetail open={true} onClose={() => {}} />} />
+                        </Routes>
                     </Box>
                 </>
                 )}

@@ -1,24 +1,17 @@
 import React, { useState } from 'react';
-import { Container, Box, Card, CardContent, Typography, TextField, Button, Stack, Dialog, DialogTitle, DialogContent, DialogActions, Link } from '@mui/material';
+import { Box, Typography, TextField, Button, Stack, Link } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from "react-router-dom";
-
-const LoginCard = styled(Card)({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: '24px',
-  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-  borderRadius: '10px',
-});
+import CharacterAlert from './CharacterAlert';
+import '../styles/character.css';
 
 const StyledButton = styled(Button)({
-  backgroundColor: '#0095F6', 
-  '&:hover': {
-    backgroundColor: '#0078D4',
-  },
-  padding: '10px 0',
-  fontWeight: 'bold',
+    backgroundColor: '#0095F6', 
+    '&:hover': {
+        backgroundColor: '#0078D4',
+    },
+    padding: '10px 0',
+    fontWeight: 'bold',
 });
 
 function Login() {
@@ -26,9 +19,8 @@ function Login() {
         email: '',
         pwd: ''
     });
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [dialogMessage, setDialogMessage] = useState('');
     const navigate = useNavigate();
+    const [showCharacter, setShowCharacter] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,25 +48,23 @@ function Login() {
             .then( res => res.json() )
             .then( data => {
                 if(data.success){
-                    setDialogMessage(data.message);
+                    setShowCharacter(true);
                     localStorage.setItem("token", data.token);
-                    navigate("/feedList");
-                } else {
-                    setDialogMessage(data.message);
-                }
-                setDialogOpen(true);
+                } 
             })
         } catch (error) {
             console.error('로그인 오류:', error);
             alert('서버 오류가 발생했습니다.');
         }
     };
-    const handleDialogClose = () => {
-        setDialogOpen(false);
+    
+    const handleClose = () => {
+        setShowCharacter(false); 
+        navigate("/feedList");
     };
 
     return (
-        <Box sx={{ mt: 35, display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ mt: 50, display: 'flex', justifyContent: 'center' }}>
             <Box
                 sx={{
                     backgroundColor: 'var(--color-current-line)',
@@ -128,6 +118,13 @@ function Login() {
                     >
                         로그인
                     </StyledButton>
+                    {showCharacter && (
+                        <CharacterAlert 
+                            imageSrc="/assets/loginImg.png"  
+                            onClose={handleClose}
+                            imageStyle={{ maxWidth: '500px', marginTop: '20px' }} 
+                        />
+                    )}
 
                     <Box sx={{ textAlign: 'center', marginTop: '16px', color: 'var(--color-purple)' }}>
                         <Typography variant="body2">
@@ -147,17 +144,6 @@ function Login() {
                     </Box>
                 </Stack>
             </Box>
-
-            {/* 로그인 결과 다이얼로그 */}
-            <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
-                <DialogTitle>알림</DialogTitle>
-                <DialogContent>
-                    <Typography>{dialogMessage}</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDialogClose}>확인</Button>
-                </DialogActions>
-            </Dialog>
         </Box>
     );
 };

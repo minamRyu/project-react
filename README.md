@@ -1,14 +1,14 @@
 
 # 🎃 React + Express Server를 이용한 SNS 만들기
 
-이 프로젝트는 **React + Express + MySQL 기반**의 **할로윈 테마 미니 SNS**입니다.
-할로윈 몬스터 캐릭터를 **피드, 알림, 배경**에 활용하여 재미를 더했습니다.
+이 프로젝트는 **React + Express + MySQL 기반**의 **미니 SNS**입니다.
+할로윈 몬스터 캐릭터를 **배경, 알림 메세지**에 활용하여 재미를 더했습니다.
 
 ---
 
 ## 📸 미리보기
 
-![프로젝트 배너](./assets/banner.png)
+![프로젝트 배너](./assets/logo.png)
 
 ---
 
@@ -17,7 +17,6 @@
 * **Frontend**: React, MUI
 * **Backend**: Node.js, Express, JWT, Bcrypt
 * **Database**: MySQL
-* **배포환경**: Localhost
 
 ---
 
@@ -31,3 +30,25 @@
 * ✅ 할로윈 테마 UI 적용
 
 ---
+
+## 💻 기능 설명
+
+📝 메인 페이지 / 로그인
+
+JWT 인증을 이용해 로그인 상태를 유지
+<p align="center"> <img src="./assets/login1.png" alt="로그인 시연" width="300"/> <img src="./assets/login2.png" alt="로그인 시연" width="300"/> </p>
+
+📜 피드 리스트
+
+추천 피드와 팔로워 목록 클릭 시 해당 유저의 피드 확인
+<p align="center"> <img src="./assets/feed1.png" alt="피드 리스트" width="300"/> </p>
+
+📰 피드 등록 & 이미지 업로드
+
+게시물 작성과 이미지 첨부 기능 지원
+<p align="center"> <img src="./assets/feedAdd1.png" alt="피드 등록 시연" width="300"/> <img src="./assets/feedAdd2.png" alt="피드 등록 시연" width="300"/> </p>
+
+
+
+
+

@@ -250,7 +250,7 @@ function FeedList() {
                     )}
                 </Box>
                 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, mt: 10 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, mt: 4 }}>
                     <Typography 
                         variant="h6"
                         sx={{color: 'var(--color-red)', fontWeight: 'bold'}}

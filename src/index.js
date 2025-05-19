@@ -6,7 +6,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <div
         style={{
-            backgroundImage: 'url("/assets/halloween-bg2.png")',
+            backgroundImage: 'url("/assets/halloween-bg.png")',
             backgroundRepeat: 'no-repeat',
             backgroundSize: '100% 100%',
             backgroundPosition: 'center',

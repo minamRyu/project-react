@@ -1,0 +1,288 @@
+-- --------------------------------------------------------
+-- 호스트:                          127.0.0.1
+-- 서버 버전:                        8.0.41 - MySQL Community Server - GPL
+-- 서버 OS:                        Win64
+-- HeidiSQL 버전:                  12.10.0.7000
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+-- 테이블 sample2.activities 구조 내보내기
+CREATE TABLE IF NOT EXISTS `activities` (
+  `activity_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `from_user_id` int NOT NULL,
+  `post_id` int DEFAULT NULL,
+  `type` varchar(20) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `comment_id` int DEFAULT NULL,
+  `parent_comment_id` int DEFAULT NULL,
+  PRIMARY KEY (`activity_id`),
+  KEY `activities_ibfk_1` (`user_id`),
+  KEY `activities_ibfk_2` (`from_user_id`),
+  KEY `activities_ibfk_3` (`post_id`),
+  CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `activities_ibfk_2` FOREIGN KEY (`from_user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `activities_ibfk_3` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 sample2.activities:~15 rows (대략적) 내보내기
+INSERT INTO `activities` (`activity_id`, `user_id`, `from_user_id`, `post_id`, `type`, `created_at`, `comment_id`, `parent_comment_id`) VALUES
+	(4, 9, 5, 24, 'mention', '2025-05-12 17:02:07', 55, NULL),
+	(5, 8, 9, 14, 'mention', '2025-05-12 19:24:35', 57, NULL),
+	(6, 6, 9, 14, 'mention', '2025-05-12 19:51:21', 58, NULL),
+	(7, 9, 5, 14, 'mention', '2025-05-12 19:58:56', 59, NULL),
+	(8, 5, 9, 14, 'mention', '2025-05-13 10:29:01', 60, NULL),
+	(9, 6, 9, 21, 'mention', '2025-05-13 12:40:08', 61, NULL),
+	(10, 6, 9, 30, 'mention', '2025-05-13 12:45:39', 62, NULL),
+	(13, 6, 9, 33, 'mention', '2025-05-13 13:06:48', 65, NULL),
+	(14, 5, 6, 33, 'mention', '2025-05-13 13:07:17', 66, NULL),
+	(15, 9, 6, 34, 'mention', '2025-05-13 13:13:08', 67, NULL),
+	(16, 9, 11, 34, 'mention', '2025-05-13 13:13:45', 68, NULL),
+	(17, 8, 9, 14, 'mention', '2025-05-13 14:33:41', 69, NULL),
+	(18, 9, 7, 19, 'mention', '2025-05-13 14:50:46', 70, NULL),
+	(19, 8, 9, 14, 'mention', '2025-05-13 15:12:31', 71, NULL),
+	(20, 8, 9, 14, 'mention', '2025-05-13 15:33:52', 72, NULL);
+
+-- 테이블 sample2.comments 구조 내보내기
+CREATE TABLE IF NOT EXISTS `comments` (
+  `comment_id` int NOT NULL AUTO_INCREMENT,
+  `post_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `content` text NOT NULL,
+  `parent_comment_id` int DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`comment_id`),
+  KEY `comments_ibfk_1` (`post_id`),
+  KEY `comments_ibfk_2` (`user_id`),
+  KEY `comments_ibfk_3` (`parent_comment_id`),
+  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
+  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `comments_ibfk_3` FOREIGN KEY (`parent_comment_id`) REFERENCES `comments` (`comment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 sample2.comments:~31 rows (대략적) 내보내기
+INSERT INTO `comments` (`comment_id`, `post_id`, `user_id`, `content`, `parent_comment_id`, `created_at`) VALUES
+	(9, 14, 7, '너두? 야 나두!', NULL, '2025-05-12 09:09:34'),
+	(12, 19, 8, '내 통장인줄', NULL, '2025-05-12 09:11:55'),
+	(14, 20, 8, 'ㅜㅜ', NULL, '2025-05-12 09:13:11'),
+	(16, 19, 9, '누가 내통장 훔쳐봤냐?', NULL, '2025-05-12 09:15:55'),
+	(18, 22, 9, '집에 보내줘', NULL, '2025-05-12 09:17:12'),
+	(19, 14, 10, '버그좀 잡아줘', NULL, '2025-05-12 09:18:04'),
+	(20, 19, 10, '로또 번호 알려주세요', NULL, '2025-05-12 09:18:26'),
+	(21, 24, 10, '하아..', NULL, '2025-05-12 09:18:49'),
+	(22, 23, 10, '내 이랄줄 아랐다', NULL, '2025-05-12 09:19:06'),
+	(23, 21, 10, '최!강!한!화!', NULL, '2025-05-12 09:20:07'),
+	(24, 19, 11, '저두 알려주세요', 20, '2025-05-12 09:24:42'),
+	(25, 23, 11, '느그 서장 남천동 살제', NULL, '2025-05-12 09:25:05'),
+	(26, 21, 11, '올해는 가을에 야구하자!!', NULL, '2025-05-12 09:25:29'),
+	(27, 27, 11, '한대 때리고 싶다', NULL, '2025-05-12 09:25:42'),
+	(29, 23, 5, '내가 마! 어! 그저께도! 다했어~', NULL, '2025-05-12 09:27:50'),
+	(30, 21, 5, '올해 우승 합니까?', NULL, '2025-05-12 09:28:07'),
+	(31, 28, 5, '캬~ 퉤!', NULL, '2025-05-12 09:28:34'),
+	(32, 20, 5, '내가 다 슬프네', NULL, '2025-05-12 09:28:53'),
+	(33, 27, 5, '두대 때리고 싶다', NULL, '2025-05-12 09:29:25'),
+	(34, 23, 7, '살아있네~', NULL, '2025-05-12 10:45:11'),
+	(35, 21, 7, '류현진 20승!!', NULL, '2025-05-12 10:45:33'),
+	(37, 23, 8, '행배야~', NULL, '2025-05-12 10:57:35'),
+	(45, 14, 11, '@test1 야! 나두!', NULL, '2025-05-12 12:47:44'),
+	(47, 21, 9, '@test4 나~는 행복합니다~!', NULL, '2025-05-12 14:46:47'),
+	(55, 24, 5, '@test5 하아...', NULL, '2025-05-12 17:02:07'),
+	(61, 21, 9, '@test2 오늘 연승 이어가나?', NULL, '2025-05-13 12:40:08'),
+	(62, 30, 9, '@test2 거기가 어딥니까?', NULL, '2025-05-13 12:45:39'),
+	(65, 33, 9, '@test2 너 말좀해봐', NULL, '2025-05-13 13:06:48'),
+	(70, 19, 7, '@test5 통장님 사망하심', NULL, '2025-05-13 14:50:46'),
+	(72, 14, 9, '@test4 맨션 버그 잡음?', NULL, '2025-05-13 15:33:52'),
+	(74, 14, 13, '학!! 씨...', 9, '2025-05-16 09:23:56');
+
+-- 테이블 sample2.followers 구조 내보내기
+CREATE TABLE IF NOT EXISTS `followers` (
+  `follower_id` int NOT NULL,
+  `following_id` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`follower_id`,`following_id`),
+  KEY `followers_ibfk_2` (`following_id`),
+  CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`following_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 sample2.followers:~31 rows (대략적) 내보내기
+INSERT INTO `followers` (`follower_id`, `following_id`, `created_at`) VALUES
+	(5, 6, '2025-05-12 10:34:00'),
+	(5, 7, '2025-05-12 10:48:12'),
+	(5, 8, '2025-05-12 10:34:45'),
+	(5, 9, '2025-05-12 10:34:32'),
+	(5, 10, '2025-05-15 12:45:37'),
+	(5, 11, '2025-05-12 10:55:45'),
+	(6, 5, '2025-05-12 10:56:34'),
+	(6, 9, '2025-05-12 10:56:31'),
+	(7, 5, '2025-05-12 10:44:30'),
+	(7, 6, '2025-05-12 10:40:14'),
+	(7, 8, '2025-05-12 10:45:18'),
+	(7, 9, '2025-05-12 10:56:49'),
+	(8, 5, '2025-05-12 10:57:02'),
+	(8, 6, '2025-05-12 10:57:04'),
+	(8, 9, '2025-05-12 10:57:06'),
+	(9, 5, '2025-05-12 10:57:53'),
+	(9, 6, '2025-05-12 10:57:50'),
+	(9, 8, '2025-05-12 14:46:18'),
+	(9, 10, '2025-05-15 12:31:57'),
+	(10, 5, '2025-05-12 10:58:54'),
+	(10, 6, '2025-05-12 10:58:51'),
+	(10, 8, '2025-05-12 10:59:15'),
+	(10, 9, '2025-05-12 10:58:56'),
+	(10, 11, '2025-05-12 10:59:11'),
+	(11, 5, '2025-05-12 12:47:18'),
+	(11, 6, '2025-05-12 10:59:47'),
+	(11, 9, '2025-05-12 10:59:28'),
+	(11, 10, '2025-05-12 10:59:35'),
+	(11, 11, '2025-05-12 10:59:37'),
+	(13, 6, '2025-05-16 09:20:26'),
+	(13, 8, '2025-05-16 09:22:54');
+
+-- 테이블 sample2.likes 구조 내보내기
+CREATE TABLE IF NOT EXISTS `likes` (
+  `like_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `post_id` int NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`like_id`),
+  KEY `likes_ibfk_1` (`user_id`),
+  KEY `likes_ibfk_2` (`post_id`),
+  CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 sample2.likes:~36 rows (대략적) 내보내기
+INSERT INTO `likes` (`like_id`, `user_id`, `post_id`, `created_at`) VALUES
+	(7, 5, 14, '2025-05-12 09:07:35'),
+	(8, 7, 14, '2025-05-12 09:09:20'),
+	(9, 7, 19, '2025-05-12 09:09:42'),
+	(13, 8, 19, '2025-05-12 09:11:47'),
+	(15, 8, 20, '2025-05-12 09:12:58'),
+	(16, 8, 14, '2025-05-12 09:13:22'),
+	(18, 9, 19, '2025-05-12 09:15:33'),
+	(20, 9, 22, '2025-05-12 09:17:07'),
+	(21, 10, 14, '2025-05-12 09:17:51'),
+	(22, 10, 19, '2025-05-12 09:18:16'),
+	(23, 10, 24, '2025-05-12 09:18:39'),
+	(24, 10, 23, '2025-05-12 09:18:54'),
+	(25, 10, 21, '2025-05-12 09:19:59'),
+	(26, 11, 14, '2025-05-12 09:24:12'),
+	(27, 11, 19, '2025-05-12 09:24:34'),
+	(28, 11, 24, '2025-05-12 09:24:50'),
+	(29, 11, 23, '2025-05-12 09:25:06'),
+	(30, 11, 21, '2025-05-12 09:25:12'),
+	(31, 11, 27, '2025-05-12 09:25:36'),
+	(34, 5, 23, '2025-05-12 09:27:12'),
+	(35, 5, 21, '2025-05-12 09:27:55'),
+	(36, 5, 24, '2025-05-12 09:28:12'),
+	(37, 5, 28, '2025-05-12 09:28:22'),
+	(38, 5, 20, '2025-05-12 09:28:46'),
+	(39, 5, 27, '2025-05-12 09:29:17'),
+	(40, 7, 23, '2025-05-12 10:44:39'),
+	(42, 8, 23, '2025-05-12 10:57:10'),
+	(45, 5, 22, '2025-05-12 14:45:12'),
+	(46, 9, 21, '2025-05-12 14:46:29'),
+	(47, 9, 30, '2025-05-13 12:45:26'),
+	(51, 9, 14, '2025-05-14 14:40:25'),
+	(55, 9, 23, '2025-05-14 15:13:27'),
+	(60, 5, 33, '2025-05-15 16:48:25'),
+	(61, 13, 23, '2025-05-16 09:23:08'),
+	(62, 13, 14, '2025-05-16 09:23:38'),
+	(63, 13, 19, '2025-05-16 09:25:00');
+
+-- 테이블 sample2.posts 구조 내보내기
+CREATE TABLE IF NOT EXISTS `posts` (
+  `post_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `content` text,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`post_id`),
+  KEY `posts_ibfk_1` (`user_id`),
+  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 sample2.posts:~12 rows (대략적) 내보내기
+INSERT INTO `posts` (`post_id`, `user_id`, `content`, `created_at`) VALUES
+	(14, 6, '너 버그생김?\r\n야! 나두!', '2025-05-12 09:00:55'),
+	(19, 5, '오늘 통장 잔고 조회결과', '2025-05-12 09:08:39'),
+	(20, 7, '내가 *자라니...\r\n내가 고*라니...', '2025-05-12 09:11:08'),
+	(21, 8, '한화 요즘 야구 겁나 잘함\r\n개 꿀잼~', '2025-05-12 09:12:53'),
+	(22, 8, '아무것도 안하고 싶다\r\n열정적으로 안하고 싶다', '2025-05-12 09:14:00'),
+	(23, 9, '거 어데 최씹니까??', '2025-05-12 09:15:29'),
+	(24, 9, '지피티가 뭐라고 쏼라쏼라하는데 뭔소린지 모르겠다.', '2025-05-12 09:16:56'),
+	(27, 10, '지피티가 나한테 미안하데', '2025-05-12 09:22:47'),
+	(28, 11, '버그가 넘처난다', '2025-05-12 09:26:24'),
+	(30, 6, '오는 겁나 맛있는 식당 알아냄', '2025-05-13 12:44:57'),
+	(33, 9, '진짜 개판이네', '2025-05-13 13:06:31'),
+	(34, 6, '아오 짜증나', '2025-05-13 13:12:45');
+
+-- 테이블 sample2.post_images 구조 내보내기
+CREATE TABLE IF NOT EXISTS `post_images` (
+  `image_id` int NOT NULL AUTO_INCREMENT,
+  `post_id` int NOT NULL,
+  `image_url` varchar(255) NOT NULL,
+  `sort_order` int DEFAULT NULL,
+  PRIMARY KEY (`image_id`),
+  KEY `post_images_ibfk_1` (`post_id`),
+  CONSTRAINT `post_images_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 sample2.post_images:~14 rows (대략적) 내보내기
+INSERT INTO `post_images` (`image_id`, `post_id`, `image_url`, `sort_order`) VALUES
+	(18, 14, '/uploads/1747008055160-769868395.gif', 1),
+	(22, 19, '/uploads/1747008519527-511616033.JPG', 1),
+	(23, 20, '/uploads/1747008668141-717688405.PNG', 1),
+	(24, 21, '/uploads/1747008773087-145287283.JPG', 1),
+	(25, 22, '/uploads/1747008840383-216602522.JPG', 1),
+	(26, 23, '/uploads/1747008929263-929407835.jpg', 1),
+	(27, 24, '/uploads/1747009016232-915222548.JPG', 1),
+	(28, 24, '/uploads/1747009016232-753843162.PNG', 2),
+	(34, 27, '/uploads/1747009367935-816658690.JPG', 1),
+	(35, 28, '/uploads/1747009584823-397877358.JPG', 1),
+	(36, 28, '/uploads/1747009584824-251080269.JPG', 2),
+	(38, 30, '/uploads/1747107897728-239685183.gif', 1),
+	(41, 33, '/uploads/1747109191673-928853209.jpg', 1),
+	(42, 34, '/uploads/1747109565561-591469586.JPG', 1);
+
+-- 테이블 sample2.users 구조 내보내기
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `user_key` varchar(50) DEFAULT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `pwd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `userName` varchar(255) NOT NULL,
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `birth` date DEFAULT NULL,
+  `profile_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `nickname` varchar(30) DEFAULT NULL,
+  `intro` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `cdate` datetime NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_key` (`user_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 sample2.users:~8 rows (대략적) 내보내기
+INSERT INTO `users` (`user_id`, `user_key`, `email`, `pwd`, `userName`, `phone`, `birth`, `profile_img`, `nickname`, `intro`, `cdate`) VALUES
+	(5, 'test1', 'test1@test.com', '$2b$10$vnZnE3Z0Pwq1Uh63QByMoeAT9PbOnM3gtyfZ8YYFWq4YY3O6iLQoK', '한지민', '12346', '1994-01-24', 'uploads/1747007944527-30000922240_1280.jpg', '얼굴천재', '집에가고 싶다', '2025-05-08 17:10:40'),
+	(6, 'test2', 'test2@test.com', '$2b$10$cPCcNb7/wqInLuuxX2d0MOcUmSIY/tFEFw5ulCTd.q5xXtAF7W6hq', '조세호', '21345315', '1990-11-06', 'uploads/1747007987159-164341553461f487eee77eb.jpg', '프로불참러', '제가요?', '2025-05-08 17:11:18'),
+	(7, 'test3', 'test3@test.com', '$2b$10$6EkKKIKJPtkOcbbBfLyJ3.hL/r3nxw8mOMa2E0eETfz3TbBM.15p.', '강호동', '12346789', '1969-12-31', 'uploads/1747291035929-101675_82604_3521.jpg', '씨름왕', '으랏챠챠', '2025-05-09 14:43:14'),
+	(8, 'test4', 'test4@test.com', '$2b$10$cY/xJQb2dt8GdnxWA6beceMev2GUb9Yk79eAVO702rRaxDkzbF9oe', '유재석', '132654', '1986-03-25', 'uploads/1746769491529-47967_53321_5254.jpg', '메뚝이', '촐싹촐싹', '2025-05-09 14:43:24'),
+	(9, 'test5', 'test5@test.com', '$2b$10$B62Wn2D9HfsoYW.ixeRbS.MfNri2GPyr5JtIf7NvYgaaCtkiwMcj6', '탱구', '987456123', '1989-10-24', 'uploads/1747034286995-f94707b5-ba53-4d69-ad94-bf22eb6716d7.jpg', '그아탱', '불티~!', '2025-05-09 14:43:34'),
+	(10, 'test6', 'test6@test.com', '$2b$10$rlYV1BySXu3VfkNvEI3Q7uckq0khASKTxlo4jZ2n37E8nUlwyCryq', '카리나', '135464', '1970-01-01', 'uploads/1746769651771-cms_temp_stats.jpg', '에스파', '헤헷', '2025-05-09 14:47:12'),
+	(11, 'test7', 'test7@test.com', '$2b$10$QV5WQ7ZGZ.RY.PgyGg53VOelDleZil5rsCa623wfr2ADThjxa2tdC', '장원영', '163546', '2010-02-16', 'uploads/1747007909217-20240920513524.jpg', '럭키비키', '프로젝트 럭키비기자나~', '2025-05-12 08:57:10'),
+	(13, 'test8', 'test8@test.com', '$2b$10$Sxte9N/gYMeqnnfbeBy02uqRjHkvHlebR1C3QXGFaGPHTBA2PiyCG', '손석구', '41541345', '1994-06-22', 'uploads/1747355064484-img_20240206160046_5449e0cb.jpg', '손석구', '연기잘함', '2025-05-15 13:07:19');
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

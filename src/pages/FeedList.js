@@ -363,6 +363,7 @@ function FeedList() {
                                 <CharacterAlert
                                     imageSrc="/assets/followImg.png"
                                     onClose={() => setActiveFollowCharacterUserId(null)}
+                                    imageStyle={{ maxWidth: '500px', marginTop: '20px' }} 
                                 />
                             )}
                             {pendingDeletePostId === post.post_id && (

@@ -2,7 +2,7 @@
     --color-background: rgb(40, 42, 54);
     --color-current-line: rgb(68, 71, 90);
     --color-foreground: rgb(248, 248, 242);
-    --color-comment: rgb(98, 114, 164); /* 💡 Comment 색상 추가 */
+    --color-comment: rgb(98, 114, 164); 
     --color-purple: rgb(189, 147, 249);
     --color-cyan: rgb(139, 233, 253);
     --color-green: rgb(80, 250, 123);

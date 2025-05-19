@@ -8,7 +8,8 @@
 
 ## 📸 미리보기
 
-![프로젝트 배너](./assets/logo.png)
+할로윈 카툰 느낌의 배경과 캐릭터
+<p align="center"> <img src="./assets/logo.png" alt="로고" width="500"/> </p>
 
 ---
 
@@ -36,17 +37,32 @@
 📝 메인 페이지 / 로그인
 
 JWT 인증을 이용해 로그인 상태를 유지
-<p align="center"> <img src="./assets/login1.png" alt="로그인 시연" width="300"/> <img src="./assets/login2.png" alt="로그인 시연" width="300"/> </p>
+<p align="center"> <img src="./assets/login1.PNG" alt="로그인 시연" width="400"/> <img src="./assets/login2.PNG" alt="로그인 시연" width="400"/> </p>
 
 📜 피드 리스트
 
-추천 피드와 팔로워 목록 클릭 시 해당 유저의 피드 확인
-<p align="center"> <img src="./assets/feed1.png" alt="피드 리스트" width="300"/> </p>
+추천 피드와 팔로워 목록
+<p align="center"> <img src="./assets/feed1.PNG" alt="피드 리스트" width="400"/> </p>
 
 📰 피드 등록 & 이미지 업로드
 
 게시물 작성과 이미지 첨부 기능 지원
-<p align="center"> <img src="./assets/feedAdd1.png" alt="피드 등록 시연" width="300"/> <img src="./assets/feedAdd2.png" alt="피드 등록 시연" width="300"/> </p>
+<p align="center"> <img src="./assets/feedAdd1.PNG" alt="피드 등록 시연" width="300"/> <img src="./assets/feedAdd2.PNG" alt="피드 등록 시연" width="300"/> </p>
+
+💬 댓글 / 좋아요 / 맨션
+
+댓글 작성, 좋아요는 할로윈 호박 불빛으로 표현. 맨션달기에 아이디 자동 검색 및 닉네임 표신
+<p align="center"> <img src="./assets/comments-likes.PNG" alt="댓글과 좋아요 시연" width="400"/> </p>
+
+🧑‍🤝‍🧑 팔로우 추가 / 팔로워 피드 보기
+
+관심 있는 사용자를 팔로우하고 피드 확인
+<p align="center"> <img src="./assets/follow1.PNG" alt="팔로우 시연" width="300"/> <img src="./assets/follow2.PNG" alt="팔로우 시연" width="300"/></p>
+
+🎃 알림 기능
+
+맨션 알림과 연동된 게시글
+<p align="center"> <img src="./assets/notification.png" alt="알림 시연" width="400"/> </p>
 
 
 

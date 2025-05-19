@@ -49,12 +49,14 @@
 <p align="center"> <img src="./assets/login1.PNG" alt="로그인 시연" width="400"/> <img src="./assets/login2.PNG" alt="로그인 시연" width="400"/> </p>
 
 
+
 📜 피드 리스트
 
 
  - 추천 피드(좋아요와 댓글개수 기준)와 팔로워 목록
    
 <p align="center"> <img src="./assets/feed1.PNG" alt="피드 리스트" width="400"/> </p>
+
 
 
 📰 피드 등록 & 이미지 업로드
@@ -65,12 +67,14 @@
 <p align="center"> <img src="./assets/feedAdd1.PNG" alt="피드 등록 시연" width="300"/> <img src="./assets/feedAdd2.PNG" alt="피드 등록 시연" width="300"/> </p>
 
 
+
 💬 댓글 / 좋아요 / 맨션
 
 
- - 댓글 작성, 좋아요는 할로윈 호박 불빛으로 표현. 맨션달기에 아이디 자동 검색 및 닉네임 표신
+ - 댓글 작성, 좋아요는 할로윈 호박 불빛으로 표현. 맨션달기에 아이디는 자동검색되면 닉네임으로 표시
 
 <p align="center"> <img src="./assets/comments-likes.PNG" alt="댓글과 좋아요 시연" width="400"/> </p>
+
 
 
 🧑‍🤝‍🧑 팔로우 추가 / 팔로워 피드 보기
@@ -79,6 +83,7 @@
  - 관심 있는 사용자를 팔로우하고 피드 확인
 
 <p align="center"> <img src="./assets/follow1.PNG" alt="팔로우 시연" width="300"/> <img src="./assets/follow2.PNG" alt="팔로우 시연" width="300"/></p>
+
 
 
 🎃 알림 기능
